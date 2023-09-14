@@ -54,7 +54,11 @@
 >
   <ul class="flex flex-col justify-center items-center h-full gap-10">
     {#each navLinks as { title, route }}
-      <li><a href={route} class="text-dark text-5xl">{title}</a></li>
+      <li>
+        <a href={route} on:click={() => (mobileNavOpen = false)} class="text-dark text-5xl"
+          >{title}</a
+        >
+      </li>
     {/each}
   </ul>
 </nav>
