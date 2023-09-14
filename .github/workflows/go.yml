@@ -7,8 +7,17 @@ on:
   pull_request:
 
 jobs:
-  check:  
-    uses: Jerome1337/gofmt-action@v1.0.5
-    with:
-      gofmt-path: './apis'
-      gofmt-flags: '-l -d'
+  
+  format:  
+      name: format code
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: Check gofmt
+        uses: Jerome1337/gofmt-action@v1.0.2
+        with:
+          gofmt-path: './'
+          gofmt-flags: '-l -s'
