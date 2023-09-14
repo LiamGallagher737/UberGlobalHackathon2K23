@@ -37,7 +37,9 @@
 <div class="p-[212px] rounded-full bg-primary absolute right-[-36px] top-[743px] shadow-circle" />
 
 <div class="relative mt-14 ml-auto mr-8 w-72">
-  <h2 class="text-3xl font-medium text-dark text-center [text-wrap:balance]">Catch a Ride With Ease</h2>
+  <h2 class="text-3xl font-medium text-dark text-center [text-wrap:balance]">
+    Catch a Ride With Ease
+  </h2>
   <div class="pb-8" />
   <p class="text-lg font-medium text-dark text-center">
     Welcome to RideHop, your one-stop solution for seamless urban commuting. Discover how we
@@ -53,7 +55,21 @@
   ]}
 />
 
+<div class="pb-[240px]" />
+
 <!-- Real-Time Updates goes here -->
+
+<div class="p-[225px] rounded-full bg-[#F0FF73] absolute left-[-69px] top-[1274px] shadow-circle" />
+<div class="p-[212px] rounded-full bg-primary absolute left-[-57px] top-[1286px] shadow-circle" />
+
+<div class="relative mt-14 ml-4 w-72">
+  <h2 class="text-3xl font-medium text-dark text-center [text-wrap:balance]">Real-Time Updates</h2>
+  <div class="pb-8" />
+  <p class="text-lg font-medium text-dark text-center">
+    Stay informed with real-time updates on public transit schedules and rideshare availability,
+    ensuring you're always in the know.
+  </p>
+</div>
 
 <Hops
   positions={[
