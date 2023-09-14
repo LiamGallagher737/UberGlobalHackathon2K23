@@ -19,5 +19,5 @@ jobs:
       - name: Check gofmt
         uses: Jerome1337/gofmt-action@v1.0.2
         with:
-          gofmt-path: './'
-          gofmt-flags: '-l -s'
+          gofmt-path: './apis'
+          args: '-l -s'
