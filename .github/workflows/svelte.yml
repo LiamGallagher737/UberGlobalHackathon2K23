@@ -1,0 +1,31 @@
+name: Check Svelte Project
+
+on:
+  push: 
+    branches:
+      - main
+  pull_request:
+
+env:
+  PUBLIC_AUTH0_DOMAIN: "https://dev-0nufy6i1bkt57nfc.au.auth0.com/"
+  PUBLIC_AUTH0_CLIENT_ID: "wZQqKqr9WLxRWhPWE5pf6FULYg2oPPic"
+  PRIVATE_AUTH0_CLIENT_SECRET: "placeholder"
+
+jobs:
+  check:  
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install dependencies  
+      working-directory: ./website
+      run: npm ci
+    
+    - name: Lint
+      working-directory: ./website
+      run: npm run lint
+
+    - name: Check  
+      working-directory: ./website
+      run: npm run check
