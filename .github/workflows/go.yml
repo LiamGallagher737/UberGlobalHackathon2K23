@@ -1,0 +1,14 @@
+name: Format GO code
+
+on:
+  push: 
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  check:  
+    uses: Jerome1337/gofmt-action@v1.0.5
+    with:
+      gofmt-path: './apis'
+      gofmt-flags: '-l -d'
