@@ -1,7 +1,7 @@
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { sql } from '@vercel/postgres';
 
-export const GET: RequestHandler = async ({}) => {
+export const GET: RequestHandler = async () => {
     try {
         const result = await sql`CREATE TABLE users (
             id INT GENERATED ALWAYS AS IDENTITY,
