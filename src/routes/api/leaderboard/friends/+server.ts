@@ -29,4 +29,4 @@ export const POST: RequestHandler = async ({ locals }) => {
     return json({
         result: friendsLeaderboard,
     });
-}
+};

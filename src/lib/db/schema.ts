@@ -6,5 +6,5 @@ export const users = pgTable('user', {
     name: text('name').notNull(),
     points: integer('points').default(0).notNull(),
     code: char('code', { length: 8 }).notNull().unique(),
-    friends: integer("friends").array(),
+    friends: integer('friends').array(),
 });
