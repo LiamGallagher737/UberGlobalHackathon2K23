@@ -6,8 +6,6 @@
   function toggleNav() {
     navOpen = !navOpen;
   }
-
-  $: console.log(navOpen);
 </script>
 
 <header class="z-10 h-20 w-[100vw] fixed top-0 left-0">
