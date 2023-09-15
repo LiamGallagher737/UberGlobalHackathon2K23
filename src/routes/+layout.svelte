@@ -4,6 +4,9 @@
 </script>
 
 <Navbar />
-<main>
+<main class="">
   <slot />
 </main>
+
+<style>
+</style>
