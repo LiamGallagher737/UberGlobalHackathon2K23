@@ -4,10 +4,11 @@ import { sql } from '@vercel/postgres';
 export const GET: RequestHandler = async () => {
     try {
         const result = await sql`CREATE TABLE users (
-            id INT GENERATED ALWAYS AS IDENTITY,
+            id SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
-            email TEXT NOT NULL,
-            score INT NOT NULL
+            email UNIQUE TEXT NOT NULL,
+            score INT NOT NULL,
+            code UNIQUE CHAR(8)
         );`;
         return json({ result });
     } catch (error) {
