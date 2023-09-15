@@ -8,7 +8,8 @@ export const GET: RequestHandler = async () => {
             name TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
             score INT NOT NULL,
-            code CHAR(8) UNIQUE NOT NULL
+            code CHAR(8) UNIQUE NOT NULL,
+            friends CHAR(8) ARRAY
         );`;
         return json({ result });
     } catch (error) {
