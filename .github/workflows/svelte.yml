@@ -8,8 +8,8 @@ on:
 
 env:
   PUBLIC_AUTH0_DOMAIN: ''
-  PUBLIC_AUTH0_CLIENT_ID: ''
-  PRIVATE_AUTH0_CLIENT_SECRET: ''
+  PUBLIC_AUTH0_ID: ''
+  PRIVATE_AUTH0_SECRET: ''
 
 jobs:
   check:
