@@ -59,6 +59,9 @@
 
 <!-- Real-Time Updates goes here -->
 
+<div class="p-[60px] rounded-full bg-[#F0FF73] absolute left-[308px] top-[1227px] shadow-circle" />
+<div class="p-[50px] rounded-full bg-primary absolute left-[318px] top-[1237px] shadow-circle" />
+
 <div class="p-[225px] rounded-full bg-[#F0FF73] absolute left-[-69px] top-[1274px] shadow-circle" />
 <div class="p-[212px] rounded-full bg-primary absolute left-[-57px] top-[1286px] shadow-circle" />
 
