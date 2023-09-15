@@ -1,0 +1,19 @@
+FROM golang:alpine
+
+WORKDIR /go/src/github.com/LiamGallagher737/UberGlobalHackathon2K23/apis/RouteFinder
+
+COPY main.go main.go
+COPY go.sum go.sum
+COPY go.mod go.mod
+COPY go.sum go.sum
+
+COPY HandleRoute.go HandleRoute.go
+COPY vendor vendor
+
+# RUN go get 
+
+RUN go install github.com/LiamGallagher737/UberGlobalHackathon2K23/apis/RouteFinder
+
+EXPOSE 80
+
+CMD RouteFinder
