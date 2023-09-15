@@ -7,7 +7,7 @@ export const GET: RequestHandler = async () => {
             id SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
-            score INT NOT NULL,
+            points INT NOT NULL,
             code CHAR(8) UNIQUE NOT NULL,
             friends CHAR(8) ARRAY
         );`;
