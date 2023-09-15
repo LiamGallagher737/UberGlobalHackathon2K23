@@ -6,7 +6,8 @@ export const GET: RequestHandler = async ({}) => {
         const result = await sql`CREATE TABLE users (
             id INT GENERATED ALWAYS AS IDENTITY,
             name TEXT NOT NULL,
-            email TEXT NOT NULL
+            email TEXT NOT NULL,
+            score INT NOT NULL
         );`;
         return json({ result });
     } catch (error) {
