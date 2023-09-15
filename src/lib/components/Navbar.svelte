@@ -17,7 +17,8 @@
     <button
       on:click={toggleNav}
       id="burger"
-      class="t z-20 h-8 w-10 flex flex-col items-end justify-between" class:clicked={navOpen}
+      class="t z-20 h-8 w-10 flex flex-col items-end justify-between"
+      class:clicked={navOpen}
     >
       <div class="transition duration-300 burger-line w-10 h-[2px] rounded-full bg-accent" />
       <div class="transition duration-300 burger-line w-6 h-[2px] rounded-full bg-accent" />
