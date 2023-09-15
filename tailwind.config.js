@@ -4,9 +4,9 @@ export default {
     theme: {
         extend: {
             colors: {
-                primary: "#000000",
-                accent: "#4cdf75",
-            }
+                primary: '#000000',
+                accent: '#4cdf75',
+            },
         },
     },
     plugins: [],
