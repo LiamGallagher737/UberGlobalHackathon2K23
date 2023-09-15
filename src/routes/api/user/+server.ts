@@ -10,7 +10,7 @@ export const GET: RequestHandler = async ({ locals }) => {
 
     if (!session.user?.email) throw error(500, 'Session email not found');
 
-    const results = await conn.select().from(users).where(eq(users.email, session.user?.email!));
+    const results = await conn.select().from(users).where(eq(users.email, session.user.email));
 
     if (results.length === 0) throw error(404, 'User not found');
 
