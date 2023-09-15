@@ -1,0 +1,18 @@
+services:
+  routefinder:
+    build: ./RouteFinder
+    networks:
+      - frontend
+      - backend
+
+    #change to expose if we put load balancer in and only expose the balancer
+    ports:
+      # expose http(tcp) port only
+      - 80:8080/tcp
+
+    environment:
+      - PORT=8080
+
+networks:
+  frontend:
+  backend:
