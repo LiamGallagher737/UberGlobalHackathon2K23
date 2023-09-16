@@ -52,7 +52,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
     const user = (await userQuery)[0];
     if (!user.id) throw error(500, 'Unable to find user');
 
-    const id = SaveJourney(points, session, user.id);
+    const id = await SaveJourney(points, session, user.id);
 
     return json({
         journey_ID: id,
