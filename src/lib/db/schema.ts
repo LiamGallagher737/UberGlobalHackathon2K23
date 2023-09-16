@@ -10,7 +10,7 @@ export const users = pgTable('user', {
 });
 
 export const journeys = pgTable('journeys', {
-    id: serial("id").primaryKey().unique().notNull(),
-    ownerEmail: text("owner_email").references(() => users.email),
-    points: integer("points")
+    id: serial('id').primaryKey().unique().notNull(),
+    ownerEmail: text('owner_email').references(() => users.email),
+    points: integer('points'),
 });

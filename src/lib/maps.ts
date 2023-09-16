@@ -1,3 +1,3 @@
-import { Client } from "@googlemaps/google-maps-services-js";
+import { Client } from '@googlemaps/google-maps-services-js';
 
-export const client = new Client({})
+export const client = new Client({});
