@@ -42,6 +42,7 @@
         "@googlemaps/google-maps-services-js": "^3.3.38",
         "@googlemaps/js-api-loader": "^1.16.2",
         "drizzle-orm": "^0.28.6",
-        "postgres": "^3.3.5"
+        "postgres": "^3.3.5",
+        "svelte-google-maps-api": "^0.0.10"
     }
 }
