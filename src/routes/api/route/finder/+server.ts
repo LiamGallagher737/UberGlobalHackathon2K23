@@ -1,5 +1,10 @@
 import { client } from '$lib/maps';
-import type { LatLng } from '@googlemaps/google-maps-services-js';
+import {
+    TravelMode,
+    type LatLng,
+    UnitSystem,
+    type RouteLeg,
+} from '@googlemaps/google-maps-services-js';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { PRIVATE_MAPS_API_KEY } from '$env/static/private';
 import { conn } from '$lib/db/conn.server';
@@ -35,30 +40,42 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     data.carPointMultiplier ??= 1;
 
-    const response = await client.distancematrix({
+    const response = await client.directions({
         params: {
-            origins: [data.start],
-            destinations: [data.destination],
+            origin: data.start,
+            destination: data.destination,
+            mode: TravelMode.driving,
             key: PRIVATE_MAPS_API_KEY,
+            units: UnitSystem.metric,
         },
     });
 
-    const journeyData = response.data.rows[0].elements[0];
-    const distance = journeyData.distance.value;
-    const time = journeyData.duration.value;
+    if (!response.data.routes[0].legs[0]) throw error(500, 'Unable to find route');
 
+    let distance: number = 0;
+    let time: number = 0;
+
+    response.data.routes[0].legs.forEach((leg: RouteLeg) => {
+        distance += leg.distance.value;
+        time += leg.duration.value;
+    });
+
+    const polyline = response.data.routes[0].overview_polyline.points;
+
+    //calculate points
     const points = CalculatePoints(distance, time, data.carPointMultiplier);
 
     const user = (await userQuery)[0];
     if (!user.id) throw error(500, 'Unable to find user');
 
-    const id = SaveJourney(points, session, user.id);
+    const id = await SaveJourney(points, session, user.id);
 
     return json({
         journey_ID: id,
         points: points,
         distance: distance,
         time: time,
+        path: polyline,
     });
 };
 
