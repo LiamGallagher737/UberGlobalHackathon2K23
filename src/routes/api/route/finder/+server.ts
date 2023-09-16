@@ -4,6 +4,7 @@ import { error, json, type RequestHandler } from "@sveltejs/kit";
 import { PRIVATE_MAPS_API_KEY } from '$env/static/private';
 import { conn } from "$lib/db/conn.server";
 import { journeys } from "$lib/db/schema";
+import type { Session } from "@auth/core/types";
 
 
 type RouteFinderData = {
@@ -17,7 +18,10 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     const session = await locals.getSession();
 
-    if (data.start === undefined || data.destination === undefined)
+    if (session === null)
+        throw error(401, "No session provided")
+
+    if (!data.start || !data.destination)
         throw error(422, "Start or Destination was not provided");
 
 
@@ -51,12 +55,12 @@ function CalculatePoints(distance: number, time: number, pointMultiplier: number
 }
 
 
-async function SaveJourney(points: number, session: any): Promise<number> {
+async function SaveJourney(points: number, session: Session): Promise<number> {
     const result = await conn
         .insert(journeys)
         .values({
             points: points,
-            ownerId: session.user?.id
+            ownerEmail: session.user?.email
         });
 
     return result.primaryKey;
