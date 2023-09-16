@@ -3,6 +3,10 @@ import { users } from '$lib/db/schema';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { desc, eq, inArray } from 'drizzle-orm';
 
+/**
+ * Get the leaderboard of the current user friends using their session
+ * @returns Friends names in points in descending order of points
+ */
 export const GET: RequestHandler = async ({ locals }) => {
     const session = await locals.getSession();
     if (session === null) throw error(401, 'Session not found');
