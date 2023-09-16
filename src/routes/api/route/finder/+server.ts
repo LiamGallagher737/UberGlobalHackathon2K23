@@ -1,5 +1,10 @@
 import { client } from '$lib/maps';
-import { TravelMode, type LatLng, UnitSystem, type RouteLeg } from '@googlemaps/google-maps-services-js';
+import {
+    TravelMode,
+    type LatLng,
+    UnitSystem,
+    type RouteLeg,
+} from '@googlemaps/google-maps-services-js';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { PRIVATE_MAPS_API_KEY } from '$env/static/private';
 import { conn } from '$lib/db/conn.server';
@@ -35,7 +40,6 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     data.carPointMultiplier ??= 1;
 
-
     const response = await client.directions({
         params: {
             origin: data.start,
@@ -44,10 +48,9 @@ export const POST: RequestHandler = async ({ locals, request }) => {
             key: PRIVATE_MAPS_API_KEY,
             units: UnitSystem.metric,
         },
-    })
+    });
 
-    if (!response.data.routes[0].legs[0])
-        throw error(500, "Unable to find route");
+    if (!response.data.routes[0].legs[0]) throw error(500, 'Unable to find route');
 
     let distance: number = 0;
     let time: number = 0;
@@ -66,7 +69,6 @@ export const POST: RequestHandler = async ({ locals, request }) => {
     if (!user.id) throw error(500, 'Unable to find user');
 
     const id = await SaveJourney(points, session, user.id);
-
 
     return json({
         journey_ID: id,
