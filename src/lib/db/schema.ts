@@ -1,4 +1,4 @@
-import { serial } from 'drizzle-orm/mysql-core';
+import { foreignKey, serial } from 'drizzle-orm/mysql-core';
 import { char, integer, pgTable, text } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('user', {
@@ -9,6 +9,7 @@ export const users = pgTable('user', {
 });
 
 export const journeys = pgTable('journeys', {
-    id: serial("id").unique().primaryKey().notNull(),
-
+    id: serial('id').primaryKey().unique(),
+    ownerId: integer("owner").notNull(),
+    points: integer("points")
 })
