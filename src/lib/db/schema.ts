@@ -1,11 +1,12 @@
-import { foreignKey, serial } from 'drizzle-orm/mysql-core';
-import { char, integer, pgTable, text } from 'drizzle-orm/pg-core';
+import { char, integer, pgTable, text, serial } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('user', {
-    email: text('email').notNull().primaryKey().unique(),
+    id: serial('id').notNull().primaryKey().unique(),
+    email: text('email').notNull().unique(),
     name: text('name').notNull(),
     points: integer('points').default(0).notNull(),
     code: char('code', { length: 8 }).notNull().unique(),
+    friends: integer('friends').array(),
 });
 
 export const journeys = pgTable('journeys', {

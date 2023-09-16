@@ -1,4 +1,6 @@
-import { drizzle } from 'drizzle-orm/vercel-postgres';
-import { sql } from '@vercel/postgres';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
+import { PRIVATE_DATEBASE_URL } from '$env/static/private';
 
-export const conn = drizzle(sql);
+const client = postgres(PRIVATE_DATEBASE_URL);
+export const conn = drizzle(client);

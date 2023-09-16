@@ -10,6 +10,7 @@ env:
   PUBLIC_AUTH0_DOMAIN: ''
   PUBLIC_AUTH0_ID: ''
   PRIVATE_AUTH0_SECRET: ''
+  PRIVATE_DATEBASE_URL: ''
 
 jobs:
   check:
