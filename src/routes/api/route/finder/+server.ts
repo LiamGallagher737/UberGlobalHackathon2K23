@@ -40,6 +40,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     data.carPointMultiplier ??= 1;
 
+
     const response = await client.directions({
         params: {
             origin: data.start,
