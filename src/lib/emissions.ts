@@ -11,7 +11,7 @@ type ApiResponse = {
 
 /**
  * @param year The year the car was made in
- * @returns The manufacturers of cars that year, null if unable to query
+ * @returns The manufacturers of cars in the given year, null if unable to query
  */
 export async function manufacturers(year: number) {
     const response = await fetch(`${URL}?year=${year}`);
@@ -25,13 +25,11 @@ export async function manufacturers(year: number) {
 /**
  * @param year The year the car was made in
  * @param manufacturer The manufacturer that made the car
- * @returns The models produced by the manufacturer that year, null if unable to query
+ * @returns The models produced by the given manufacturer in the given year, null if unable to query
  */
 export async function models(year: number, manufacturer: string) {
     const response = await fetch(`${URL}?year=${year}&make=${manufacturer}`);
-
     if (!response.ok) return null;
-
     const data: ApiResponse = await response.json();
     return data.menuItem;
 }
@@ -40,7 +38,7 @@ export async function models(year: number, manufacturer: string) {
  * @param year The year the car was made in
  * @param manufacturer The manufacturer that made the car
  * @param model The model of car
- * @returns The specific models produced by the manufacturer for that make that year, null if unable to query
+ * @returns The specific models produced by the given manufacturer for the given make in the given year, null if unable to query
  */
 export async function specificModels(year: number, manufacturer: string, model: string) {
     const response = await fetch(`${URL}?year=${year}&make=${manufacturer}&model=${model}`);
