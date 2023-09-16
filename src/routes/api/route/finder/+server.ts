@@ -3,8 +3,9 @@ import type { LatLng } from '@googlemaps/google-maps-services-js';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { PRIVATE_MAPS_API_KEY } from '$env/static/private';
 import { conn } from '$lib/db/conn.server';
-import { journeys } from '$lib/db/schema';
+import { journeys, users } from '$lib/db/schema';
 import type { Session } from '@auth/core/types';
+import { eq } from 'drizzle-orm';
 
 type RouteFinderData = {
     start: LatLng | undefined;
@@ -17,7 +18,13 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     const session = await locals.getSession();
 
-    if (session === null) throw error(401, 'No session provided');
+    if (!session?.user?.email) throw error(401, 'No session provided');
+
+    const userQuery = conn
+        .select({ id: users.id })
+        .from(users)
+        .where(eq(users.email, session.user?.email))
+        .limit(1);
 
     if (!data.start || !data.destination) throw error(422, 'Start or Destination was not provided');
 
@@ -37,7 +44,10 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     const points = CalculatePoints(distance, time, data.carPointMultiplier);
 
-    const id = SaveJourney(points, session);
+    const user = (await userQuery)[0];
+    if (!user.id) throw error(500, 'Unable to find user');
+
+    const id = SaveJourney(points, session, user.id);
 
     return json({
         journey_ID: id,
@@ -50,10 +60,10 @@ function CalculatePoints(distance: number, time: number, pointMultiplier: number
     return distance * pointMultiplier;
 }
 
-async function SaveJourney(points: number, session: Session): Promise<number> {
+async function SaveJourney(points: number, session: Session, ownerID: number): Promise<number> {
     const result = await conn.insert(journeys).values({
         points: points,
-        ownerEmail: session.user?.email,
+        owner: ownerID,
     });
 
     return result.primaryKey;

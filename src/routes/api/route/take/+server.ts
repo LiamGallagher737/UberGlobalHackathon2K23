@@ -22,7 +22,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
         await conn.select().from(journeys).where(eq(journeys.id, data.journey_ID)).limit(1)
     )[0];
 
-    if (!journey.points || !journey.ownerEmail) throw error(404, 'Unable to find journey');
+    if (!journey.points || !journey.owner) throw error(404, 'Unable to find journey');
 
     const currentPoints = (
         await conn.select({ points: users.points }).from(users).where(eq(users.email, email))
