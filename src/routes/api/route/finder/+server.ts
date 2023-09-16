@@ -66,11 +66,13 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     const id = await SaveJourney(points, session, user.id);
 
+
     return json({
         journey_ID: id,
         points: points,
         distance: distance,
         time: time,
+        path: response.data.routes[0].overview_path,
     });
 };
 
