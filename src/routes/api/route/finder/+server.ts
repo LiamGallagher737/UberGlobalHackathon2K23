@@ -35,6 +35,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     data.carPointMultiplier ??= 1;
 
+
     const response = await client.distancematrix({
         params: {
             origins: [data.start],
@@ -44,6 +45,10 @@ export const POST: RequestHandler = async ({ locals, request }) => {
     });
 
     const journeyData = response.data.rows[0].elements[0];
+
+    if (!journeyData.distance?.value || !journeyData.duration?.value)
+        throw error(500, "Unable to get journey data");
+
     const distance = journeyData.distance.value;
     const time = journeyData.duration.value;
 
