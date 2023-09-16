@@ -11,9 +11,15 @@
     libraries: ['maps'],
   });
 
+  let startMarker: google.maps.Marker;
+  let endMarker: google.maps.Marker;
+
+  let startSet: boolean = false;
+  let endSet: boolean = false;
+
   let userPosition = { lat: 0, lng: 0 };
 
-  let map: google.maps.Map, infoWindow: google.maps.InfoWindow;
+  let map: google.maps.Map;
 
   onMount(async () => {
     if ('geolocation' in navigator) {
@@ -24,12 +30,6 @@
         };
 
         map.setCenter(pos);
-        
-        new google.maps.Marker({
-          position: userPosition,
-          map,
-          title: 'Hello World!',
-        });
       });
     }
 
@@ -44,16 +44,72 @@
       return new Map(mapDiv, mapOptions);
     });
 
-    infoWindow = new google.maps.InfoWindow();
+    google.maps.event.addListener(map, 'click', (event: { latLng: google.maps.LatLngLiteral }) => {
+      if (!startSet) {
+        updateStartMarker(event.latLng, map);
+      } else if (!endSet) {
+        updateEndMarker(event.latLng, map);
+      }
+
+      if (startSet && endSet) {
+      }
+    });
   });
+
+  function updateStartMarker(location: google.maps.LatLngLiteral, map: google.maps.Map) {
+    // Add the marker at the clicked location, and add the next-available label
+    // from the array of alphabetical characters.
+
+    if (startMarker === undefined) {
+      console.log('Set the marker');
+
+      startMarker = new google.maps.Marker({
+        position: location,
+        label: 'S',
+        map: map,
+      });
+    } else {
+      startMarker.setPosition(location);
+    }
+  }
+
+  function updateEndMarker(location: google.maps.LatLngLiteral, map: google.maps.Map) {
+    // Add the marker at the clicked location, and add the next-available label
+    // from the array of alphabetical characters.
+
+    if (endMarker === undefined) {
+      console.log('Set the marker');
+
+      endMarker = new google.maps.Marker({
+        position: location,
+        label: 'E',
+        map: map,
+      });
+    } else {
+      endMarker.setPosition(location);
+    }
+  }
 </script>
 
-<section class="flex flex-col items-center justify-evenly w-screen h-screen">
+<section class="flex flex-col items-center justify-evenly w-screen h-screen bg-white">
   <div class="w-1/2 h-1/2 rounded-2xl shadow-lg" id="map" />
 
   <form action="">
-    <button>Set Start</button>
-    <button>Set End</button>
+    <button
+      on:click={() => {
+        startSet = !startSet;
+      }}
+      class:bg-green-200={startSet}
+      class="transition duration-200 w-32 h-10 bg-green-500 rounded-xl shadow-md m-5"
+      >Set Start</button
+    >
+    <button
+      on:click={() => {
+        endSet = !endSet;
+      }}
+      class:bg-red-200={endSet}
+      class="transition duration-200 w-32 h-10 bg-red-500 rounded-xl shadow-md m-5">Set End</button
+    >
   </form>
 </section>
 
