@@ -9,4 +9,8 @@
 </main>
 
 <style>
+  main {
+    background-color: white;
+    overflow-x: hidden;
+  }
 </style>

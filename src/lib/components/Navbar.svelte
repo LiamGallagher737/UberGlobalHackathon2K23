@@ -9,8 +9,8 @@
 </script>
 
 <header class="z-10 h-20 w-[100vw] fixed top-0 left-0">
-  <nav class="flex items-center justify-between h-full mx-5">
-    <span class=""><img class="t h-10" src={logo} alt="" /></span>
+  <nav class="flex items-center h-full mx-5 justify-end">
+    
 
     <button
       on:click={toggleNav}
