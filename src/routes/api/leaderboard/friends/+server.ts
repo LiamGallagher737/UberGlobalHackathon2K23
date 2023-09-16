@@ -14,19 +14,32 @@ export const GET: RequestHandler = async ({ locals }) => {
 
     if (!session.user?.email) throw error(500, 'Session email not found');
 
-    const friends = conn
-        .select({ friends: users.friends })
-        .from(users)
-        .where(eq(users.email, session.user.email))
-        .as('sq');
+    const userResults = await conn.select({ name: users.name, points: users.points, friends: users.friends }).from(users).where(eq(users.email, session.user.email));
 
-    const friendsLeaderboard = await conn
-        .select(leaderboardCols)
+    if (userResults.length === 0) throw error(404, 'User not found');
+    const user = userResults[0];
+
+    if (user.friends === null) {
+        return json({
+            leaderboard: [],
+            user: {
+                name: user.name,
+                points: user.points,
+            }
+        });
+    }
+
+    const leaderboard = conn
+        .select({ name: users.name, points: users.points })
         .from(users)
-        .where(or(inArray(users.id, friends), eq(users.email, session.user?.email)))
+        .innerJoin(users, inArray(users.id, user.friends))
         .orderBy(desc(users.points));
 
     return json({
-        result: friendsLeaderboard,
+        leaderboard,
+        user: {
+            name: user.name,
+            points: user.points,
+        },
     });
 };
