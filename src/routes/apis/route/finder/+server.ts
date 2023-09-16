@@ -37,10 +37,10 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     const points = CalculatePoints(distance, time, data.carPointMultiplier);
 
-    const Id = SaveJourney(points, session);
+    const id = SaveJourney(points, session);
 
     return json({
-        journey_ID: Id,
+        journey_ID: id,
         distance: distance,
         time: time,
     })
@@ -58,4 +58,6 @@ async function SaveJourney(points: number, session: any): Promise<number> {
             points: points,
             ownerId: session.user?.id
         });
+
+    return result.primaryKey;
 }
