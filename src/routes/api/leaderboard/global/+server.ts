@@ -1,7 +1,7 @@
 import { conn } from '$lib/db/conn.server';
 import { users } from '$lib/db/schema';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
-import { desc } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 
 /**
  * Get the top N users globally, if N is not provded it will default to 10
