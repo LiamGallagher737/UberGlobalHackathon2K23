@@ -4,38 +4,24 @@ import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { desc, eq } from 'drizzle-orm';
 
 /**
- * Get the tp 10 users globally and the current users points with their session
- * @returns Top 10 users globally names and points in descending order of points
+ * Get the top N users globally, if N is not provded it will default to 10
+ * @returns Top N users globally names and points in descending order of points
  */
-export const GET: RequestHandler = async ({ locals }) => {
-    const session = await locals.getSession();
-
-    if (session === null) throw error(401, 'Session not found');
-
-    const leaderboardCols = {
-        name: users.name,
-        points: users.points,
-    };
-
-    if (!session.user?.email) throw error(500, 'Session email not found');
-
-    const userEntry = await conn
-        .select(leaderboardCols)
-        .from(users)
-        .where(eq(users.email, session.user.email));
-
-    if (userEntry.length === 0) throw error(404, 'User not found');
+export const GET: RequestHandler = async ({ url }) => {
+    const count = Math.min(parseInt(url.searchParams.get('n') ?? '10') ?? 10, 100);
 
     const leaderboard = await conn
-        .select(leaderboardCols)
+        .select({
+            name: users.name,
+            points: users.points,
+        })
         .from(users)
         .orderBy(desc(users.points))
-        .limit(10);
+        .limit(count);
 
     if (leaderboard.length === 0) throw error(500, 'Unable to fetch leaderboard');
 
     return json({
         result: leaderboard,
-        user: userEntry[0],
     });
 };
