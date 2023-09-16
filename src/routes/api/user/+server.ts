@@ -3,6 +3,10 @@ import { users } from '$lib/db/schema';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
+/**
+ * Get the data of a user with their session
+ * @returns User data
+ */
 export const GET: RequestHandler = async ({ locals }) => {
     const session = await locals.getSession();
 
