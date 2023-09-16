@@ -38,7 +38,7 @@
     "dependencies": {
         "@auth/core": "^0.14.0",
         "@auth/sveltekit": "^0.3.7",
-        "@vercel/postgres": "^0.4.1",
-        "drizzle-orm": "^0.28.6"
+        "drizzle-orm": "^0.28.6",
+        "postgres": "^3.3.5"
     }
 }
