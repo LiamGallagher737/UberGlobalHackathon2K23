@@ -3,6 +3,11 @@ import { users } from '$lib/db/schema';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { desc, eq } from 'drizzle-orm';
 
+export const config = {
+    runtime: 'edge',
+    regions: ['iad1'],
+};
+
 /**
  * Get the top N users globally, if N is not provded it will default to 10
  * @returns Top N users globally names and points in descending order of points
@@ -24,5 +29,10 @@ export const GET: RequestHandler = async ({ url }) => {
 
     return json({
         result: leaderboard,
+    }, {
+        headers: {
+            // Browser chache for 5 mins, edge cache for 30 mins
+            'cache-control': 'max-age=300, s-maxage=1800',
+        }
     });
 };
