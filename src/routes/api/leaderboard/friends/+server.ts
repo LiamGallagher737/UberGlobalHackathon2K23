@@ -5,7 +5,7 @@ import { desc, eq, inArray } from 'drizzle-orm';
 
 /**
  * Get the leaderboard of the current user friends using their session
- * @returns Friends names in points in descending order of points
+ * @returns Friends names and points in descending order of points
  */
 export const GET: RequestHandler = async ({ locals }) => {
     const session = await locals.getSession();
