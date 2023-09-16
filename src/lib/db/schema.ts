@@ -1,3 +1,4 @@
+import { serial } from 'drizzle-orm/mysql-core';
 import { char, integer, pgTable, text } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('user', {
@@ -6,3 +7,8 @@ export const users = pgTable('user', {
     points: integer('points').default(0).notNull(),
     code: char('code', { length: 8 }).notNull().unique(),
 });
+
+export const journeys = pgTable('journeys', {
+    id: serial("id").unique().primaryKey().notNull(),
+
+})
