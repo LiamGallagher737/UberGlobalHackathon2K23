@@ -7,6 +7,10 @@ type TakeJourneyData = {
     journey_ID: number | undefined | null;
 };
 
+/**
+ * Handles the user wanting to actually take a trip instead of just looking
+ * @returns The new amount of points that the user has
+ */
 export const POST: RequestHandler = async ({ locals, request }) => {
     const session = await locals.getSession();
 

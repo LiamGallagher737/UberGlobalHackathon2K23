@@ -13,6 +13,11 @@ type RouteFinderData = {
     carPointMultiplier: number | undefined;
 };
 
+/**
+ * Handles the user wanting to query a route for the distance,
+ * time and amount of points earn't.
+ * @returns The journey with all the data the user could possibly want
+ */
 export const POST: RequestHandler = async ({ locals, request }) => {
     const data: RouteFinderData = await request.json();
 
@@ -51,6 +56,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     return json({
         journey_ID: id,
+        points: points,
         distance: distance,
         time: time,
     });
