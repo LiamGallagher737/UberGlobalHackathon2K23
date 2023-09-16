@@ -44,9 +44,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
             key: PRIVATE_MAPS_API_KEY,
             units: UnitSystem.metric,
         },
-
     })
-
 
     if (!response.data.routes[0].legs[0])
         throw error(500, "Unable to find route");
@@ -59,6 +57,9 @@ export const POST: RequestHandler = async ({ locals, request }) => {
         time += leg.duration.value;
     });
 
+    const polyline = response.data.routes[0].overview_polyline.points;
+
+    //calculate points
     const points = CalculatePoints(distance, time, data.carPointMultiplier);
 
     const user = (await userQuery)[0];
@@ -72,7 +73,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
         points: points,
         distance: distance,
         time: time,
-        path: response.data.routes[0].overview_path,
+        path: polyline,
     });
 };
 
