@@ -67,10 +67,13 @@ function CalculatePoints(distance: number, time: number, pointMultiplier: number
 }
 
 async function SaveJourney(points: number, session: Session, ownerID: number): Promise<number> {
-    const result = await conn.insert(journeys).values({
-        points: points,
-        owner: ownerID,
-    });
+    const result = await conn
+        .insert(journeys)
+        .values({
+            points: points,
+            owner: ownerID,
+        })
+        .returning({ journeyID: journeys.id });
 
-    return result.primaryKey;
+    return result[0].journeyID;
 }
