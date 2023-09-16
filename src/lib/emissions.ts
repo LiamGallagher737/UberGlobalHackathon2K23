@@ -1,4 +1,4 @@
-const URL = 'https://www.fueleconomy.gov/ws/rest/vehicle/menu/make';
+const URL = 'https://www.fueleconomy.gov/ws/rest/vehicle/menu';
 
 export type KeyValue = {
     title: string;
@@ -10,55 +10,64 @@ type ApiResponse = {
 };
 
 /**
- * @param year The year the car was made in
- * @returns The manufacturers of cars in the given year, null if unable to query
+ * @param year The year the vehicle was made in
+ * @returns The manufacturers of vehicles in the given year, null if unable to query
  */
 export async function manufacturers(year: number) {
-    const response = await fetch(`${URL}?year=${year}`);
-
+    const response = await fetch(`${URL}/make?year=${year}`, {
+        headers: { Accept: 'application/json' },
+    });
     if (!response.ok) return null;
-
     const data: ApiResponse = await response.json();
     return data.menuItem;
 }
 
 /**
- * @param year The year the car was made in
- * @param manufacturer The manufacturer that made the car
+ * @param year The year the vehicle was made in
+ * @param manufacturer The manufacturer that made the vehicle
  * @returns The models produced by the given manufacturer in the given year, null if unable to query
  */
 export async function models(year: number, manufacturer: string) {
-    const response = await fetch(`${URL}?year=${year}&make=${manufacturer}`);
+    const response = await fetch(`${URL}/model?year=${year}&make=${manufacturer}`, {
+        headers: { Accept: 'application/json' },
+    });
     if (!response.ok) return null;
     const data: ApiResponse = await response.json();
     return data.menuItem;
 }
 
 /**
- * @param year The year the car was made in
- * @param manufacturer The manufacturer that made the car
- * @param model The model of car
- * @returns The specific models produced by the given manufacturer for the given make in the given year, null if unable to query
+ * @param year The year the vehicle was made in
+ * @param manufacturer The manufacturer that made the vehicle
+ * @param model The model of vehicle
+ * @returns The options for the given model produced by the given manufacturer in the given year, null if unable to query
  */
-export async function specificModels(year: number, manufacturer: string, model: string) {
-    const response = await fetch(`${URL}?year=${year}&make=${manufacturer}&model=${model}`);
+export async function options(year: number, manufacturer: string, model: string) {
+    const response = await fetch(
+        `${URL}/options?year=${year}&make=${manufacturer}&model=${model}`,
+        {
+            headers: { Accept: 'application/json' },
+        }
+    );
     if (!response.ok) return null;
     const data: ApiResponse = await response.json();
     return data.menuItem;
 }
 
 /**
- * @param id The ID of the car to lookup
- * @returns The infomation about the car with the given ID
+ * @param id The ID of the vehicle to lookup
+ * @returns The infomation about the vehicle with the given ID
  */
-export async function carData(id: string) {
-    const response = await fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/${id}`);
+export async function vehicle(id: string) {
+    const response = await fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/${id}`, {
+        headers: { Accept: 'application/json' },
+    });
     if (!response.ok) return null;
-    const data: CarInfo = await response.json();
+    const data: VehicleInfo = await response.json();
     return data;
 }
 
-export type CarInfo = {
+export type VehicleInfo = {
     atvType: string;
     barrels08: string;
     barrelsA08: string;
@@ -89,7 +98,7 @@ export type CarInfo = {
     cylinders: string;
     displ: string;
     drive: string;
-    emissionsList: EmissionsList;
+    emissionsList: EmissionsList | null;
     engId: string;
     eng_dscr: string;
     evMotor: string;
