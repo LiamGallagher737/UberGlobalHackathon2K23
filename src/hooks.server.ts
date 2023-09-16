@@ -19,7 +19,7 @@ const config: SvelteKitAuthConfig = {
     secret: 'cfc1bb18fc9ba615ea8a3f6db2df089c',
     debug: true,
     session: {
-        maxAge: 1800, // 30 mins
+        maxAge: 60 * 60 * 4, // 4 hours
     },
 };
 
