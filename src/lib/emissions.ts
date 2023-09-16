@@ -10,7 +10,7 @@ type ApiResponse = {
 };
 
 /**
- * @param year The year the vehicle was made in
+ * @param year The year the vehicle was made in (1984 - present)
  * @returns The manufacturers of vehicles in the given year, null if unable to query
  */
 export async function manufacturers(year: number) {
