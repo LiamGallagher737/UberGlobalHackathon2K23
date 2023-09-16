@@ -50,5 +50,5 @@ function CalculatePoints(distance: number, time: number, pointMultiplier: number
 
 
 function SaveJourney(points: number, session: any): number {
-    return 0;
+    await
 }
