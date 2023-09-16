@@ -22,12 +22,15 @@ export const GET: RequestHandler = async ({ url }) => {
 
     if (leaderboard.length === 0) throw error(500, 'Unable to fetch leaderboard');
 
-    return json({
-        result: leaderboard,
-    }, {
-        headers: {
-            // Browser chache for 5 mins, edge cache for 30 mins
-            'Cache-Control': 'max-age=300, s-maxage=1800',
+    return json(
+        {
+            result: leaderboard,
+        },
+        {
+            headers: {
+                // Browser chache for 5 mins, edge cache for 30 mins
+                'Cache-Control': 'max-age=300, s-maxage=1800',
+            },
         }
-    });
+    );
 };
