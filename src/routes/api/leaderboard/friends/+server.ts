@@ -27,10 +27,10 @@ export const GET: RequestHandler = async ({ locals }) => {
         });
     }
 
-    const leaderboard = conn
+    const leaderboard = await conn
         .select({ name: users.name, points: users.points })
         .from(users)
-        .innerJoin(users, inArray(users.id, user.friends))
+        .where(inArray(users.id, user.friends))
         .orderBy(desc(users.points));
 
     return json({
