@@ -9,7 +9,7 @@ export const users = pgTable('user', {
 });
 
 export const journeys = pgTable('journeys', {
-    id: serial('id').primaryKey().unique(),
-    ownerId: integer("owner").notNull(),
+    id: serial("id").primaryKey().unique().notNull(),
+    ownerId: integer("owner").references(() => users.id),
     points: integer("points")
-})
+});

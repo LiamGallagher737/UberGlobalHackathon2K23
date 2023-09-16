@@ -2,6 +2,8 @@ import { client } from "$lib/maps";
 import type { LatLng } from "@googlemaps/google-maps-services-js";
 import { error, json, type RequestHandler } from "@sveltejs/kit";
 import { PRIVATE_MAPS_API_KEY } from '$env/static/private';
+import { conn } from "$lib/db/conn.server";
+import { journeys } from "$lib/db/schema";
 
 
 type RouteFinderData = {
@@ -49,6 +51,11 @@ function CalculatePoints(distance: number, time: number, pointMultiplier: number
 }
 
 
-function SaveJourney(points: number, session: any): number {
-    await
+async function SaveJourney(points: number, session: any): Promise<number> {
+    const result = await conn
+        .insert(journeys)
+        .values({
+            points: points,
+            ownerId: session.user?.id
+        });
 }
