@@ -1,4 +1,4 @@
-import { char, integer, pgTable, text, serial } from 'drizzle-orm/pg-core';
+import { char, integer, pgTable, text, serial, boolean } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('user', {
     id: serial('id').notNull().primaryKey().unique(),
@@ -7,6 +7,7 @@ export const users = pgTable('user', {
     points: integer('points').default(0).notNull(),
     code: char('code', { length: 8 }).notNull().unique(),
     friends: integer('friends').array(),
+    private: boolean('private').notNull().default(true),
 });
 
 export const journeys = pgTable('journeys', {

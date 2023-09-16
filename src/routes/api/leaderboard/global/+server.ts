@@ -25,6 +25,7 @@ export const GET: RequestHandler = async ({ locals }) => {
     const leaderboard = await conn
         .select(leaderboardCols)
         .from(users)
+        .where(eq(users.private, false))
         .orderBy(desc(users.points))
         .limit(10);
 
