@@ -1,8 +1,17 @@
-import { char, integer, pgTable, text } from 'drizzle-orm/pg-core';
+import { char, integer, pgTable, text, serial, boolean } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('user', {
-    email: text('email').notNull().primaryKey().unique(),
+    id: serial('id').notNull().primaryKey().unique(),
+    email: text('email').notNull().unique(),
     name: text('name').notNull(),
     points: integer('points').default(0).notNull(),
     code: char('code', { length: 8 }).notNull().unique(),
+    friends: integer('friends').array(),
+    private: boolean('private').notNull().default(false),
+});
+
+export const journeys = pgTable('journeys', {
+    id: serial('id').primaryKey().unique().notNull(),
+    owner: integer('owner_id').references(() => users.id),
+    points: integer('points'),
 });
