@@ -4,15 +4,6 @@
   function toggleNav() {
     navOpen = !navOpen;
   }
-
-  const navLinks = [
-    { title: 'Home', route: '/' },
-    { title: 'Ride', route: '/ride' },
-    { title: 'Leaderboards', route: '/leaderboards' },
-    { title: 'Raffles', route: '/raffles' },
-    { title: 'About', route: '/about' },
-    { title: 'Contact', route: '/contact' },
-  ];
 </script>
 
 <header class="z-10 h-20 w-[100vw] fixed top-0 left-0">
