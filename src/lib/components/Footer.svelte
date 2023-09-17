@@ -11,6 +11,7 @@
       <li><a href="/"><strong>Home</strong></a></li>
       <li><a href="/ride"><strong>Ride</strong></a></li>
       <li><a href="/leaderboard"><strong>Leaderboard</strong></a></li>
+      <li><a href="/raffles"><strong>Raffles</strong></a></li>
       <li><a href="/about"><strong>About</strong></a></li>
       <li><a href="/contact"><strong>Contact</strong></a></li>
     </ul>
