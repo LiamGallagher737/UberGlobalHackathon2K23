@@ -5,6 +5,7 @@
   import { Client } from '@googlemaps/google-maps-services-js';
   import { onMount } from 'svelte';
   import { json } from '@sveltejs/kit';
+  import { google } from 'googleapis';
 
   const FINDER_API_URL = '/api/route/finder';
 
