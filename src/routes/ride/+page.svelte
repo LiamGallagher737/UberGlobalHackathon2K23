@@ -1,10 +1,7 @@
 <script lang="ts">
   import { PUBLIC_MAP_API_KEY } from '$env/static/public';
   import { Loader } from '@googlemaps/js-api-loader';
-  import type LatLng from '@googlemaps/google-maps-services-js';
-  import { Client } from '@googlemaps/google-maps-services-js';
   import { onMount } from 'svelte';
-  import { json } from '@sveltejs/kit';
   import { google } from 'googleapis';
 
   const FINDER_API_URL = '/api/route/finder';
