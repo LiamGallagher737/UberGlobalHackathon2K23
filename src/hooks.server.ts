@@ -25,7 +25,7 @@ const config: SvelteKitAuthConfig = {
         maxAge: 60 * 60 * 24, // 24 hours
     },
     callbacks: {
-        async signIn({ user, account, profile, email, credentials }) {
+        async signIn({ profile }) {
             console.log(`\n\n\nUSERUSERUSERUSEURSU: ${JSON.stringify(profile)}\n\n\n`);
             if (!profile?.email) return false;
             const user_res = await conn.select().from(users).where(eq(users.email, profile.email));
