@@ -8,8 +8,6 @@
 
 <header class="z-10 h-20 w-[100vw] fixed top-0 left-0">
   <nav class="flex items-center h-full mx-5 justify-end">
-    
-
     <button
       on:click={toggleNav}
       id="burger"
@@ -25,9 +23,7 @@
       class="transition duration-700 z-10 w-[100vw] h-[100vh] bg-grad absolute top-0 left-[-100vw] flex items-center justify-evenly"
       class:active={navOpen}
     >
-      <ul
-        class="text-white font-black flex flex-col items-center gap-2 align-middle"
-      >
+      <ul class="text-white font-black flex flex-col items-center gap-2 align-middle">
         <li><a on:click={toggleNav} href="/">HOME</a></li>
         <li><a on:click={toggleNav} href="/ride">RIDE</a></li>
         <li><a on:click={toggleNav} href="/leaderboard">LEADERBOARD</a></li>

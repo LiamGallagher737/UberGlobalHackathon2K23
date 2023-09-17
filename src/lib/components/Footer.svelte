@@ -21,18 +21,18 @@
     <h1 class="blob-title">Contact us</h1>
 
     <ul class="relative top-2">
-        <li>
-            <div class="flex justify-center">
-                <img class="scale-150" src={mailIcon} alt="mail icon">
-                <p class="pl-5">example@gmail.com</p>
-            </div>
-        </li>
-        <li>
-            <div class="flex justify-center">
-                <img class="scale-150" src={phoneIcon} alt="mail icon">
-                <p class="pl-5">123 456 7890</p>
-            </div>
-        </li>
+      <li>
+        <div class="flex justify-center">
+          <img class="scale-150" src={mailIcon} alt="mail icon" />
+          <p class="pl-5">example@gmail.com</p>
+        </div>
+      </li>
+      <li>
+        <div class="flex justify-center">
+          <img class="scale-150" src={phoneIcon} alt="mail icon" />
+          <p class="pl-5">123 456 7890</p>
+        </div>
+      </li>
     </ul>
   </div>
 </section>
@@ -50,7 +50,6 @@
     background-image: linear-gradient(to bottom right, #f3ed47, #2adc7d);
   }
 
-  
   li {
     color: white;
     text-align: center;
