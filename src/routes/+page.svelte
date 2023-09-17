@@ -4,7 +4,6 @@
   import blob2 from '$lib/assets/blobs/blob2.svg';
   import blob3 from '$lib/assets/blobs/blob3.svg';
   import blob4 from '$lib/assets/blobs/blob4.svg';
-  import Footer from '$lib/components/Footer.svelte';
 </script>
 
 <section id="sec-1" class="w-[100vw] h-[100vh] bg-white flex justify-center">
