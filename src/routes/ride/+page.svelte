@@ -4,12 +4,19 @@
   import type LatLng from '@googlemaps/google-maps-services-js';
   import { Client } from '@googlemaps/google-maps-services-js';
   import { onMount } from 'svelte';
+  import { json } from '@sveltejs/kit';
+
+  const FINDER_API_URL = '/api/route/finder';
 
   const loader = new Loader({
     apiKey: PUBLIC_MAP_API_KEY,
     version: 'weekly',
-    libraries: ['maps'],
+    libraries: ['maps', 'geometry'],
   });
+
+  const LINE_COLOUR: string = '#0b008a';
+  const LINE_WEIGHT: number = 4;
+  const LINE_OPACITY: number = 1.0;
 
   let startMarker: google.maps.Marker;
   let endMarker: google.maps.Marker;
@@ -21,7 +28,11 @@
 
   let map: google.maps.Map;
 
+  let geometry: google.maps.GeometryLibrary;
+
   onMount(async () => {
+    geometry = await loader.importLibrary('geometry');
+
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         const pos = {
@@ -44,17 +55,64 @@
       return new Map(mapDiv, mapOptions);
     });
 
-    google.maps.event.addListener(map, 'click', (event: { latLng: google.maps.LatLngLiteral }) => {
-      if (!startSet) {
-        updateStartMarker(event.latLng, map);
-      } else if (!endSet) {
-        updateEndMarker(event.latLng, map);
-      }
+    google.maps.event.addListener(
+      map,
+      'click',
+      async (event: { latLng: google.maps.LatLngLiteral }) => {
+        if (!startSet) {
+          updateStartMarker(event.latLng, map);
+        } else if (!endSet) {
+          updateEndMarker(event.latLng, map);
+        }
 
-      if (startSet && endSet) {
+        if (startSet && endSet) {
+          if (!startMarker.getPosition || !endMarker.getPosition)
+            throw new Error('Unable to find markers');
+
+          const body = {
+            start: startMarker.getPosition(),
+            destination: endMarker.getPosition(),
+          };
+
+          console.log(body);
+
+          const req = await fetch(FINDER_API_URL, {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+
+          if (!req.ok) throw new Error('Unable to fetch route data');
+
+          const encodedPath: string = (await req.json()).path;
+
+          if (!encodedPath) throw new Error('Unable to parse route data response');
+
+          updateMapRoute(encodedPath, map);
+        }
       }
-    });
+    );
   });
+
+  let line: google.maps.Polyline | undefined;
+
+  function updateMapRoute(encodedPath: string, map: google.maps.Map) {
+    const decodedPath = geometry.encoding.decodePath(encodedPath);
+
+    if (!line) {
+      line = new google.maps.Polyline({
+        path: decodedPath,
+        geodesic: true,
+        strokeColor: LINE_COLOUR,
+        strokeOpacity: LINE_OPACITY,
+        strokeWeight: LINE_WEIGHT,
+      });
+    } else {
+      line.setPath(decodedPath);
+    }
+
+    line.setMap(map);
+  }
 
   function updateStartMarker(location: google.maps.LatLngLiteral, map: google.maps.Map) {
     // Add the marker at the clicked location, and add the next-available label
