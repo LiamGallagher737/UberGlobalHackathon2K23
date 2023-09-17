@@ -39,11 +39,9 @@
     "dependencies": {
         "@auth/core": "^0.14.0",
         "@auth/sveltekit": "^0.3.7",
-        "@googleapis/docs": "^2.0.5",
         "@googlemaps/google-maps-services-js": "^3.3.38",
         "@googlemaps/js-api-loader": "^1.16.2",
         "drizzle-orm": "^0.28.6",
-        "googleapis": "^126.0.1",
         "postgres": "^3.3.5",
         "svelte-google-maps-api": "^0.0.10"
     }
