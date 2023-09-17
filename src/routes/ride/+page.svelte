@@ -1,8 +1,8 @@
 <script lang="ts">
+  /* eslint-disable */
   import { PUBLIC_MAPS_API_KEY } from '$env/static/public';
   import { Loader } from '@googlemaps/js-api-loader';
   import { onMount } from 'svelte';
-  import { google } from 'googleapis';
 
   const FINDER_API_URL = '/api/route/finder';
 
