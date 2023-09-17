@@ -9,7 +9,7 @@
 
   const navLinks = [
     { title: 'Home', route: '/' },
-    { title: 'Map', route: '/map' },
+    { title: 'Ride', route: '/ride' },
     { title: 'Leaderboards', route: '/leaderboards' },
     { title: 'About', route: '/about' },
   ];
