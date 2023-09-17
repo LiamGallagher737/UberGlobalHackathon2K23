@@ -8,7 +8,7 @@ type RequestData = {
 };
 
 /**
- * Set the pirvate column of the user with their session
+ * Set the private column of the user with their session
  * @returns Operation status
  */
 export const PUT: RequestHandler = async ({ locals, request }) => {
