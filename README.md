@@ -15,4 +15,4 @@ Ecoride is the fun and innotave way to push yourself to save the planet. Go on e
 
 _The Ecoride devs_
 
-\*unless your Liam
+\*unless you're Liam
