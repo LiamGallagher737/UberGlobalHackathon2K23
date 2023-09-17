@@ -4,6 +4,15 @@
   function toggleNav() {
     navOpen = !navOpen;
   }
+
+  const navLinks = [
+    { title: 'Home', route: '/' },
+    { title: 'Ride', route: '/ride' },
+    { title: 'Leaderboards', route: '/leaderboards' },
+    { title: 'Raffles', route: '/raffles' },
+    { title: 'About', route: '/about' },
+    { title: 'Contact', route: '/contact' },
+  ];
 </script>
 
 <header class="z-10 h-20 w-[100vw] fixed top-0 left-0">
@@ -28,12 +37,9 @@
       <ul
         class="text-white font-black flex flex-col items-center gap-2 align-middle"
       >
-        <li><a on:click={toggleNav} href="/">HOME</a></li>
-        <li><a on:click={toggleNav} href="/ride">RIDE</a></li>
-        <li><a on:click={toggleNav} href="/leaderboard">LEADERBOARD</a></li>
-        <li><a on:click={toggleNav} href="/raffles">RAFFLES</a></li>
-        <li><a on:click={toggleNav} href="/about">ABOUT</a></li>
-        <li><a on:click={toggleNav} href="/contact">CONTACT</a></li>
+        {#each navLinks as { title, route }}
+          <li><a href={route} on:click={() => (navOpen = false)}>{title}</a></li>
+        {/each}
       </ul>
     </div>
   </nav>

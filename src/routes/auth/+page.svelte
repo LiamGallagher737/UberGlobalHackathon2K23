@@ -3,6 +3,8 @@
   import { page } from '$app/stores';
 </script>
 
+<div class="mt-16" />
+
 <h1>SvelteKit Auth Example</h1>
 <p>
   {#if $page.data.session}
