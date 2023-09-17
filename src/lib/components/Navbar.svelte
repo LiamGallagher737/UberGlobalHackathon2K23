@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import logo from '$lib/assets/logo.svg';
 
   let navOpen: boolean = false;
@@ -7,9 +8,12 @@
     navOpen = !navOpen;
   }
 
+  const signedIn = !!$page.data.session;
+
   const navLinks = [
     { title: 'Home', route: '/' },
     { title: 'Ride', route: '/ride' },
+    { title: `${signedIn ? 'Profile' : 'Sign In'}`, route: '/auth' },
     { title: 'Leaderboards', route: '/leaderboards' },
     { title: 'About', route: '/about' },
   ];

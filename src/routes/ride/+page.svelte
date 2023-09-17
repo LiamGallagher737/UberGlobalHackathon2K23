@@ -19,6 +19,8 @@
   let startMarker: google.maps.Marker;
   let endMarker: google.maps.Marker;
 
+  let points: number = 0;
+
   let startSet: boolean = false;
   let endSet: boolean = false;
 
@@ -44,7 +46,7 @@
 
     const mapOptions = {
       center: userPosition,
-      zoom: 4,
+      zoom: 10,
     };
 
     const mapDiv = document.getElementById('map') as HTMLInputElement;
@@ -52,6 +54,15 @@
     map = await loader.importLibrary('maps').then(({ Map }) => {
       return new Map(mapDiv, mapOptions);
     });
+
+    map.setOptions({
+      streetViewControl: false, 
+      mapTypeControlOptions: { 
+        mapTypeIds: [
+          google.maps.MapTypeId.ROADMAP
+        ]
+      },
+    })
 
     google.maps.event.addListener(
       map,
@@ -62,8 +73,14 @@
         } else if (!endSet) {
           updateEndMarker(event.latLng, map);
         }
+      }
+    );
+  });
 
-        if (startSet && endSet) {
+  let line: google.maps.Polyline | undefined;
+
+  async function calculatePoints() {
+    if (startSet && endSet) {
           if (!startMarker.getPosition || !endMarker.getPosition)
             throw new Error('Unable to find markers');
 
@@ -71,8 +88,6 @@
             start: startMarker.getPosition(),
             destination: endMarker.getPosition(),
           };
-
-          console.log(body);
 
           const req = await fetch(FINDER_API_URL, {
             method: 'post',
@@ -82,17 +97,17 @@
 
           if (!req.ok) throw new Error('Unable to fetch route data');
 
-          const encodedPath: string = (await req.json()).path;
+          const data = await req.json();
+
+          const encodedPath: string = data.path;
 
           if (!encodedPath) throw new Error('Unable to parse route data response');
 
-          updateMapRoute(encodedPath, map);
-        }
-      }
-    );
-  });
+          points = data.points;
 
-  let line: google.maps.Polyline | undefined;
+          updateMapRoute(encodedPath, map);
+    }
+  }
 
   function updateMapRoute(encodedPath: string, map: google.maps.Map) {
     const decodedPath = geometry.encoding.decodePath(encodedPath);
@@ -147,69 +162,34 @@
   }
 </script>
 
-<section class="flex flex-col items-center justify-evenly w-screen h-screen bg-white">
-  <div class="w-1/2 h-1/2 rounded-2xl shadow-lg" id="map" />
+<section class="pt-16 flex flex-col items-center justify-center w-screen h-screen bg-white">
+  <div class="w-9/12 md:w-9/12 h-2/3 rounded-2xl shadow-lg mb-10" id="map" />
 
-  <form action="">
+  <form class="w-9/12 md:w-9/12" action="">
     <button
       on:click={() => {
-        startSet = !startSet;
+        if (startMarker != undefined) {
+          startSet = !startSet;
+        }
       }}
       class:bg-green-200={startSet}
-      class="transition duration-200 w-32 h-10 bg-green-500 rounded-xl shadow-md m-5"
-      >Set Start</button
+      class:bg-green-500={!startSet}
+      class="transition duration-200 w-32 h-10 rounded-xl shadow-md mb-5">Set Start</button
     >
     <button
       on:click={() => {
-        endSet = !endSet;
+        if (endMarker != undefined) {
+          endSet = !endSet;
+        }
       }}
       class:bg-red-200={endSet}
-      class="transition duration-200 w-32 h-10 bg-red-500 rounded-xl shadow-md m-5">Set End</button
+      class:bg-red-500={!endSet}
+      class="transition duration-200 w-32 h-10 rounded-xl shadow-md ml-5">Set End</button
     >
+    <button
+      on:click={calculatePoints}
+      class="transition duration-200 w-40 h-10 rounded-xl bg-blue-500 shadow-md ml-5">Calculate Points</button
+    >
+    <div class="flex items-center justify-center bg-gray-500 w-40 h-10 rounded-xl"><p class=" text-xl text-center">{points} points</p></div>
   </form>
 </section>
-
-<svelte:head>
-  <script>
-    ((g) => {
-      var h,
-        a,
-        k,
-        p = 'The Google Maps JavaScript API',
-        c = 'google',
-        l = 'importLibrary',
-        q = '__ib__',
-        m = document,
-        b = window;
-      b = b[c] || (b[c] = {});
-      var d = b.maps || (b.maps = {}),
-        r = new Set(),
-        e = new URLSearchParams(),
-        u = () =>
-          h ||
-          (h = new Promise(async (f, n) => {
-            await (a = m.createElement('script'));
-            e.set('libraries', [...r] + '');
-            for (k in g)
-              e.set(
-                k.replace(/[A-Z]/g, (t) => '_' + t[0].toLowerCase()),
-                g[k]
-              );
-            e.set('callback', c + '.maps.' + q);
-            a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
-            d[q] = f;
-            a.onerror = () => (h = n(Error(p + ' could not load.')));
-            a.nonce = m.querySelector('script[nonce]')?.nonce || '';
-            m.head.append(a);
-          }));
-      d[l]
-        ? console.warn(p + ' only loads once. Ignoring:', g)
-        : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
-    })({
-      key: { PUBLIC_MAP_API_KEY },
-      v: 'weekly',
-      // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
-      // Add other bootstrap parameters as needed, using camel case.
-    });
-  </script>
-</svelte:head>

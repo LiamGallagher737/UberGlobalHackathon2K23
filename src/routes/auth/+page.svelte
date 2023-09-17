@@ -1,23 +1,27 @@
 <script>
   import { signIn, signOut } from '@auth/sveltekit/client';
   import { page } from '$app/stores';
+  import SigninButton from './SignInButton.svelte';
+
+  let signedIn = !!$page.data.session;
 </script>
 
-<div class="mt-16" />
-
-<h1>SvelteKit Auth Example</h1>
-<p>
-  {#if $page.data.session}
-    {#if $page.data.session.user?.image}
-      <span style="background-image: url('{$page.data.session.user.image}')" class="avatar" />
+<section class="flex items-center justify-around h-screen">
+  <div
+    class="w-4/5 h-1/3 md:w-1/3 md:h-1/2 rounded-3xl shadow-lg shadow-green-400 bg-gray-50 flex flex-col items-center justify-between"
+  >
+    {#if $page.data.session}
+      <!-- {#if $page.data.session.user?.image}
+        <span style="background-image: url('{$page.data.session.user.image}')" class="avatar" />
+      {/if} -->
+      <p class="signedInText mb-6 m-10">
+        <small>Signed in as</small><br />
+        <strong>{$page.data.session.user?.name ?? 'User'}</strong>
+      </p>
+    {:else}
+      <p class="notSignedInText text-red-500 mb-6">You are not signed in</p>
     {/if}
-    <span class="signedInText">
-      <small>Signed in as</small><br />
-      <strong>{$page.data.session.user?.name ?? 'User'}</strong>
-    </span>
-    <button on:click={() => signOut()} class="button">Sign out</button>
-  {:else}
-    <span class="notSignedInText">You are not signed in</span>
-    <button on:click={() => signIn('auth0')}>Sign In</button>
-  {/if}
-</p>
+
+    <SigninButton {signedIn} on:signIn={signIn} on:signOut={signOut} />
+  </div>
+</section>
