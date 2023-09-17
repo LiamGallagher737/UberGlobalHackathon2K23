@@ -1,7 +1,7 @@
 const URL = 'https://www.fueleconomy.gov/ws/rest/vehicle/menu';
 
 export type KeyValue = {
-    title: string;
+    text: string;
     value: string;
 };
 
@@ -17,7 +17,7 @@ export async function manufacturers(year: number) {
     const response = await fetch(`${URL}/make?year=${year}`, {
         headers: { Accept: 'application/json' },
     });
-    if (!response.ok) return null;
+    if (!response.ok) throw new Error('Failed to fetch manufacturers');
     const data: ApiResponse = await response.json();
     return data.menuItem;
 }
@@ -31,7 +31,7 @@ export async function models(year: number, manufacturer: string) {
     const response = await fetch(`${URL}/model?year=${year}&make=${manufacturer}`, {
         headers: { Accept: 'application/json' },
     });
-    if (!response.ok) return null;
+    if (!response.ok) throw new Error('Failed to fetch models');
     const data: ApiResponse = await response.json();
     return data.menuItem;
 }
@@ -49,8 +49,8 @@ export async function options(year: number, manufacturer: string, model: string)
             headers: { Accept: 'application/json' },
         }
     );
-    if (!response.ok) return null;
-    const data: ApiResponse = await response.json();
+    if (!response.ok) throw new Error('Failed to fetch options');
+    const data: { menuItem: KeyValue | KeyValue[] } = await response.json();
     return data.menuItem;
 }
 
@@ -62,7 +62,7 @@ export async function vehicle(id: string) {
     const response = await fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/${id}`, {
         headers: { Accept: 'application/json' },
     });
-    if (!response.ok) return null;
+    if (!response.ok) throw new Error('Failed to fetch vehicle');
     const data: VehicleInfo = await response.json();
     return data;
 }

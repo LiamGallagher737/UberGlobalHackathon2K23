@@ -3,6 +3,10 @@
   import { PUBLIC_MAPS_API_KEY } from '$env/static/public';
   import { Loader } from '@googlemaps/js-api-loader';
   import { onMount } from 'svelte';
+  import type { RouteFinderData } from '../api/route/finder/+server';
+  import { options } from '$lib/emissions';
+  import * as emissions from '$lib/emissions';
+  import CarSelector from './CarSelector.svelte';
 
   const FINDER_API_URL = '/api/route/finder';
 
@@ -19,10 +23,25 @@
   let startMarker: google.maps.Marker;
   let endMarker: google.maps.Marker;
 
+  let startLocation: string;
+  let endLocation: string;
+
+  let year: number | null = null;
+  let manufacturer: string | null = null;
+  let model: string | null = null;
+  let option: string | null = null;
+
+  $: console.log('Start: ', startLocation);
+  $: console.log('End: ', endLocation);
+
   let points: number = 0;
 
   let startSet: boolean = false;
   let endSet: boolean = false;
+
+  type SettingState = 'start' | 'end' | 'nothing';
+
+  let state: SettingState = 'nothing';
 
   let userPosition = { lat: 0, lng: 0 };
 
@@ -56,23 +75,27 @@
     });
 
     map.setOptions({
-      streetViewControl: false, 
-      mapTypeControlOptions: { 
-        mapTypeIds: [
-          google.maps.MapTypeId.ROADMAP
-        ]
+      streetViewControl: false,
+      mapTypeControlOptions: {
+        mapTypeIds: [google.maps.MapTypeId.ROADMAP],
       },
-    })
+    });
 
     google.maps.event.addListener(
       map,
       'click',
       async (event: { latLng: google.maps.LatLngLiteral }) => {
-        if (!startSet) {
-          updateStartMarker(event.latLng, map);
-        } else if (!endSet) {
-          updateEndMarker(event.latLng, map);
+        switch (state) {
+          case 'start':
+            updateStartMarker(event.latLng, map);
+            break;
+          case 'end':
+            updateEndMarker(event.latLng, map);
+            break;
+          case 'nothing':
+            break;
         }
+        state = 'nothing';
       }
     );
   });
@@ -81,31 +104,34 @@
 
   async function calculatePoints() {
     if (startSet && endSet) {
-          if (!startMarker.getPosition || !endMarker.getPosition)
-            throw new Error('Unable to find markers');
+      const startPosition = startMarker.getPosition()?.toJSON();
+      const endPosition = endMarker.getPosition()?.toJSON();
 
-          const body = {
-            start: startMarker.getPosition(),
-            destination: endMarker.getPosition(),
-          };
+      if (!startPosition || !endPosition) throw new Error('Unable to find markers');
 
-          const req = await fetch(FINDER_API_URL, {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-          });
+      const body: RouteFinderData = {
+        start: startPosition,
+        destination: endPosition,
+        carEmissionsId: 'walking',
+      };
 
-          if (!req.ok) throw new Error('Unable to fetch route data');
+      const req = await fetch(FINDER_API_URL, {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
 
-          const data = await req.json();
+      if (!req.ok) throw new Error('Unable to fetch route data');
 
-          const encodedPath: string = data.path;
+      const data = await req.json();
 
-          if (!encodedPath) throw new Error('Unable to parse route data response');
+      const encodedPath: string = data.path;
 
-          points = data.points;
+      if (!encodedPath) throw new Error('Unable to parse route data response');
 
-          updateMapRoute(encodedPath, map);
+      points = data.points;
+
+      updateMapRoute(encodedPath, map);
     }
   }
 
@@ -130,10 +156,9 @@
   function updateStartMarker(location: google.maps.LatLngLiteral, map: google.maps.Map) {
     // Add the marker at the clicked location, and add the next-available label
     // from the array of alphabetical characters.
+    startSet = true;
 
     if (startMarker === undefined) {
-      console.log('Set the marker');
-
       startMarker = new google.maps.Marker({
         position: location,
         label: 'S',
@@ -142,11 +167,14 @@
     } else {
       startMarker.setPosition(location);
     }
+
+    startLocation = `${startMarker.getPosition()?.lat()}, ${startMarker.getPosition()?.lng()}`;
   }
 
   function updateEndMarker(location: google.maps.LatLngLiteral, map: google.maps.Map) {
     // Add the marker at the clicked location, and add the next-available label
     // from the array of alphabetical characters.
+    endSet = true;
 
     if (endMarker === undefined) {
       console.log('Set the marker');
@@ -159,37 +187,49 @@
     } else {
       endMarker.setPosition(location);
     }
+
+    endLocation = `${endMarker.getPosition()?.lat()}, ${endMarker.getPosition()?.lng()}`;
   }
 </script>
 
-<section class="pt-16 flex flex-col items-center justify-center w-screen h-screen bg-white">
-  <div class="w-9/12 md:w-9/12 h-2/3 rounded-2xl shadow-lg mb-10" id="map" />
+<section class="pt-24 flex flex-col items-center justify-center w-screen bg-white">
+  <div class="w-9/12 md:w-9/12 h-96 rounded-2xl shadow-lg mb-10" id="map" />
 
   <form class="w-9/12 md:w-9/12" action="">
-    <button
+    <input
+      type="text"
+      placeholder="Enter start point, or select on map"
       on:click={() => {
-        if (startMarker != undefined) {
-          startSet = !startSet;
-        }
+        state = 'start';
       }}
-      class:bg-green-200={startSet}
-      class:bg-green-500={!startSet}
-      class="transition duration-200 w-32 h-10 rounded-xl shadow-md mb-5">Set Start</button
-    >
-    <button
+      bind:value={startLocation}
+      name="start"
+      id="2"
+      class="bg-transparent p-5 w-full h-10 rounded-2xl shadow-xl mb-7"
+    />
+    <input
+      type="text"
+      placeholder="Enter end point, or select on map"
       on:click={() => {
-        if (endMarker != undefined) {
-          endSet = !endSet;
-        }
+        state = 'end';
       }}
-      class:bg-red-200={endSet}
-      class:bg-red-500={!endSet}
-      class="transition duration-200 w-32 h-10 rounded-xl shadow-md ml-5">Set End</button
-    >
-    <button
-      on:click={calculatePoints}
-      class="transition duration-200 w-40 h-10 rounded-xl bg-blue-500 shadow-md ml-5">Calculate Points</button
-    >
-    <div class="flex items-center justify-center bg-gray-500 w-40 h-10 rounded-xl"><p class=" text-xl text-center">{points} points</p></div>
+      bind:value={endLocation}
+      name="end"
+      id="1"
+      class="bg-transparent p-5 w-full h-10 rounded-2xl shadow-xl mb-7"
+    />
+    <div class="flex">
+      <button
+        on:click={calculatePoints}
+        class="transition duration-200 w-40 h-10 rounded-xl bg-blue-500 shadow-md mr-5"
+        >Calculate Points</button
+      >
+      <div class="flex items-center justify-center bg-gray-500 w-40 h-10 rounded-xl">
+        <p class=" text-xl text-center">{points} points</p>
+      </div>
+    </div>
+    <div class="mt-5 flex flex-col gap-4">
+      <CarSelector />
+    </div>
   </form>
 </section>
