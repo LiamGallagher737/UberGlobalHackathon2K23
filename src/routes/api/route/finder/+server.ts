@@ -67,7 +67,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
     const polyline = response.data.routes[0].overview_polyline.points;
 
     //calculate points
-    const points = CalculatePoints(distance, time, pointMultiplier);
+    const points = CalculatePoints(distance, time, await pointMultiplier);
 
     const user = (await userQuery)[0];
     if (!user.id) throw error(500, 'Unable to find user');
@@ -83,12 +83,14 @@ export const POST: RequestHandler = async ({ locals, request }) => {
     });
 };
 
-async function CalculatePointMultiplier(mode: string): number {
-    if (mode == 'walking') return 15;
-    else
-        return await vehicle(mode).then((vehicle) => {
-            vehicle?.emissionsList[0];
-        });
+async function CalculatePointMultiplier(mode: string) {
+    if (mode == 'walking') {
+        return 15;
+    } else {
+        const res = await vehicle(mode);
+        if (!res.emissionsList) throw new Error('Vehicle has no emissions data');
+        return parseInt(res.emissionsList?.emissionsInfo[0].score);
+    }
 }
 
 function CalculatePoints(distance: number, time: number, pointMultiplier: number): number {

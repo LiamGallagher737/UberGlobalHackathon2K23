@@ -1,23 +1,23 @@
 <script lang="ts">
-    import * as emissions from '$lib/emissions';
+  import * as emissions from '$lib/emissions';
 
-    let year: number | null;
-    let manufacturer: string | null = null;
-    let model: string | null = null;
-    let option: string | null = null;
+  let year: number | null;
+  let manufacturer: string | null = null;
+  let model: string | null = null;
+  export let option: string | null = null;
 
-    async function getOptions(year: number, manufacturer: string, model: string) {
-        let res = await emissions.options(year, manufacturer, model);
-        if(!Array.isArray(res)) {
-            option = res.value;
-            return null;
-        }
-        if (res.length === 1) {
-            option = res[0].value;
-            return null;
-        }
-        return res;
+  async function getOptions(year: number, manufacturer: string, model: string) {
+    let res = await emissions.options(year, manufacturer, model);
+    if (!Array.isArray(res)) {
+      option = res.value;
+      return null;
     }
+    if (res.length === 1) {
+      option = res[0].value;
+      return null;
+    }
+    return res;
+  }
 </script>
 
 <select
@@ -31,6 +31,7 @@
   }}
 >
   <option value={null} selected disabled>Car year</option>
+  <!-- eslint-disable-next-line -->
   {#each { length: 41 } as _, i}
     <option value={2024 - i}>{2024 - i}</option>
   {/each}
@@ -86,12 +87,12 @@
     Loading Options
   {:then data}
     {#if data !== null}
-        <select bind:value={option} id="option" name="option">
-            <option value={null} selected disabled>Car Option</option>
-            {#each data as { text, value }}
-                <option {value}>{text}</option>
-            {/each}
-        </select>
+      <select bind:value={option} id="option" name="option">
+        <option value={null} selected disabled>Car Option</option>
+        {#each data as { text, value }}
+          <option {value}>{text}</option>
+        {/each}
+      </select>
     {/if}
   {:catch}
     <p>An error occured when trying to get options</p>
@@ -105,7 +106,7 @@
     {#if data.emissionsList}
       <span>{data.emissionsList.emissionsInfo[0].score}</span>
     {:else}
-        <span>No Score</span>
+      <span>No Score</span>
     {/if}
   {:catch}
     <p>An error occured when trying to get vehicle info</p>
