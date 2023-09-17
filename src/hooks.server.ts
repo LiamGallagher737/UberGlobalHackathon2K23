@@ -35,7 +35,7 @@ const config: SvelteKitAuthConfig = {
                 return true;
             }
 
-            let insert_res = await conn
+            const insert_res = await conn
                 .insert(users)
                 .values({
                     email: profile.email,
