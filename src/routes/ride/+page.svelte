@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { PUBLIC_MAP_API_KEY } from '$env/static/public';
+  import { PUBLIC_MAPS_API_KEY } from '$env/static/public';
   import { Loader } from '@googlemaps/js-api-loader';
   import { onMount } from 'svelte';
   import { google } from 'googleapis';
@@ -7,7 +7,7 @@
   const FINDER_API_URL = '/api/route/finder';
 
   const loader = new Loader({
-    apiKey: PUBLIC_MAP_API_KEY,
+    apiKey: PUBLIC_MAPS_API_KEY,
     version: 'weekly',
     libraries: ['maps', 'geometry'],
   });
@@ -97,14 +97,14 @@
   function updateMapRoute(encodedPath: string, map: google.maps.Map) {
     const decodedPath = geometry.encoding.decodePath(encodedPath);
 
-    if (!line) {
+    if (line === undefined) {
       line = new google.maps.Polyline({
         path: decodedPath,
         geodesic: true,
         strokeColor: LINE_COLOUR,
         strokeOpacity: LINE_OPACITY,
         strokeWeight: LINE_WEIGHT,
-      });
+      }) as google.maps.Polyline;
     } else {
       line.setPath(decodedPath);
     }
