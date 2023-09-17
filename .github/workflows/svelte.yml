@@ -12,6 +12,7 @@ env:
   PRIVATE_AUTH0_SECRET: ''
   PRIVATE_DATEBASE_URL: ''
   PRIVATE_MAPS_API_KEY: ''
+  PUBLIC_MAPS_API_KEY: ''
 
 jobs:
   check:

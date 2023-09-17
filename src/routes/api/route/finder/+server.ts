@@ -26,6 +26,8 @@ type RouteFinderData = {
 export const POST: RequestHandler = async ({ locals, request }) => {
     const data: RouteFinderData = await request.json();
 
+    console.log(data);
+
     const session = await locals.getSession();
 
     if (!session?.user?.email) throw error(401, 'No session provided');
@@ -36,7 +38,8 @@ export const POST: RequestHandler = async ({ locals, request }) => {
         .where(eq(users.email, session.user?.email))
         .limit(1);
 
-    if (!data.start || !data.destination) throw error(422, 'Start or Destination was not provided');
+    if (!data?.start || !data?.destination)
+        throw error(422, 'Start or Destination was not provided');
 
     data.carPointMultiplier ??= 1;
 
