@@ -4,151 +4,178 @@
   import blob2 from '$lib/assets/blobs/blob2.svg';
   import blob3 from '$lib/assets/blobs/blob3.svg';
   import blob4 from '$lib/assets/blobs/blob4.svg';
-
-  let options =  {
-    root: document.querySelector('#scrollArea'),
-    rootMargin: '0px',
-    threshhold: 1.0
-  };
-
-  let slideAppear = new IntersectionObserver((entries, slideAppear) => {
-    entries.forEach(entry => {
-      console.log(entry);
-    });
-  }, options);
-
-  let targets = document.querySelectorAll(".slideAppear");
-
-  targets.forEach(target => {
-    slideAppear.observe(target);
-  });
-
 </script>
 
-<section id="sec-1" class="w-[100vw] h-[100vh] bg-white flex justify-center">
-  <div id="text-wrapper" class="font-thin w-9/12 absolute top-1/4">
-    <span class=""><img class="h-15" src={logo} alt="logo" /></span>
-    <h1 class="text-center gradient-text font-semibold text-2xl pt-5">
-      Unlocking a greener future
-    </h1>
-  </div>
-</section>
-
-<section id="sec-2" class="w-[100vw] h-[120vh] bg-white">
-  <div class="blob -mr-20 text-center top-20">
-    <img class="scale-150 drop-shadow-xl" src={blob} alt="blob" />
-    <div class="absolute top-5 left-20 w-44 flex flex-col items-center">
-      <h1 class="blob-title">Our Vision for a Greener Tomorrow</h1>
-      <p class="blob-text w-64">
-        Empowering eco-conscious individuals to make a positive impact on our planet through
-        sustainable ridesharing experiences, while fostering a sense of community and healthy
-        competition among users, all in pursuit of a greener, more sustainable future for
-        generations to come.
-      </p>
+<div id="scrollArea">
+  <section id="sec-1" class="w-[100vw] h-[100vh] bg-white flex justify-center">
+    <div id="text-wrapper" class="font-thin w-9/12 absolute top-1/4">
+      <span class=""><img class="h-15" src={logo} alt="logo" /></span>
+      <h1 class="text-center gradient-text font-semibold text-2xl pt-5">
+        Unlocking a greener future
+      </h1>
     </div>
-  </div>
+  </section>
 
-  <div class="blob text-center top-44">
-    <img class="scale-150 drop-shadow-xl" src={blob2} alt="blob" />
-    <div class="absolute top-6 left-24 w-56 flex flex-col items-center">
-      <h1 class="blob-title">Join the Ecoride Community</h1>
-      <p class="blob-text w-96">
-        Ecoride is more than just a rideshare platform; it's a thriving community of like-minded
-        individuals dedicated to eco-conscious transportation. With our Eco Score system, you can
-        actively engage, compete, and collaborate with fellow users to create a greener future. Your
-        rides with Ecoride go beyond commuting; they contribute to a collective mission. Join the
-        Ecoride community today and be a part of the change.
-      </p>
-    </div>
-  </div>
-</section>
-
-<section id="sec-3" class="w-[100vw] h-[100vh] bg-white">
-  <div class="blob -mr-5 text-center -top-16">
-    <img class="drop-shadow-xl" src={blob4} alt="blob" />
-    <div class="absolute top-32 left-32 w-44 flex flex-col items-center">
-      <h1 class="blob-title">Start Riding Eco-Friendly</h1>
-
-      <div class="bg-white rounded-2xl mt-5">
-        <a href="/auth">
-          <button class="sign-up-button gradient-text rounded-2xl"> Sign Up </button>
-        </a>
+  <section id="sec-2" class="w-[100vw] h-[120vh] bg-white">
+    <div class="blob -mr-20 text-center top-20">
+      <img class="scale-150 drop-shadow-xl" src={blob} alt="blob" />
+      <div class="absolute top-5 left-20 w-44 flex flex-col items-center">
+        <h1 class="blob-title slideAppearRight">Our Vision for a Greener Tomorrow</h1>
+        <p class="blob-text w-64">
+          Empowering eco-conscious individuals to make a positive impact on our planet through
+          sustainable ridesharing experiences, while fostering a sense of community and healthy
+          competition among users, all in pursuit of a greener, more sustainable future for
+          generations to come.
+        </p>
       </div>
     </div>
-  </div>
 
-  <div class="blob text-center top-30 -mr-10">
-    <img class="scale-150 drop-shadow-xl" src={blob3} alt="blob" />
-    <div class="absolute top-12 left-16 w-56 flex flex-col items-center">
-      <h1 class="blob-title">Driving Innovation for Sustainability</h1>
-      <p class="blob-text w-96">
-        Our Vision for a Greener Tomorrow Empowering eco-conscious individuals to make a positive
-        impact on our planet through sustainable ridesharing experiences, while fostering a sense of
-        community and healthy competition among users, all in pursuit of a greener, more sustainable
-        future for generations to come.
-      </p>
-    </div>
-  </div>
-</section>
-
-<section id="sec-4" class="w-[100vw] h-[100vh] bg-white">
-  <div class="blob text-center top-20 -ml-10">
-    <img class="scale-[1.75] drop-shadow-xl" src={blob2} alt="blob" />
-    <div class="absolute top-1 left-20 w-56 flex flex-col items-center">
-      <h1 class="blob-title">Climb the Leaderboards with Your Eco Score</h1>
-      <p class="blob-text w-96">
-        Our Eco Score system tracks and rewards your eco-friendly ridesharing choices, allowing you
-        to earn a coveted spot on our leaderboards. Climb to the top by choosing shared rides,
-        opting for electric vehicles, and making eco-conscious decisions. Your journey towards a
-        higher Eco Score not only reflects your dedication but also contributes to a collective
-        effort to reduce carbon emissions. Join the race to the leaderboard and show the world how
-        your rides are making a positive impact on the environment.
-      </p>
-    </div>
-  </div>
-
-  <div class="blob -mr-5 text-center top-24">
-    <img class="drop-shadow-xl" src={blob4} alt="blob" />
-    <div class="absolute top-36 left-20 w-72 flex flex-col items-center">
-      <h1 class="blob-title">Join the Ecoride Movement Today</h1>
-
-      <div class="bg-white rounded-2xl mt-5">
-        <a href="/auth">
-          <button class="sign-up-button gradient-text rounded-2xl">Sign Up</button>
-        </a>
+    <div class="blob text-center top-44">
+      <img class="scale-150 drop-shadow-xl" src={blob2} alt="blob" />
+      <div class="absolute top-6 left-24 w-56 flex flex-col items-center">
+        <h1 class="blob-title">Join the Ecoride Community</h1>
+        <p class="blob-text w-96">
+          Ecoride is more than just a rideshare platform; it's a thriving community of like-minded
+          individuals dedicated to eco-conscious transportation. With our Eco Score system, you can
+          actively engage, compete, and collaborate with fellow users to create a greener future.
+          Your rides with Ecoride go beyond commuting; they contribute to a collective mission. Join
+          the Ecoride community today and be a part of the change.
+        </p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="sec-5" class="w-[100vw] h-[25vh] bg-white">
-  <div class="blob -mr-24 text-center -top-24">
-    <img class="scale-50 drop-shadow-xl" src={blob2} alt="blob" />
-    <div class="absolute top-[11.75rem] left-16 w-72 flex flex-col items-center">
-      <a class="blob-title" href="#sec-1">Back to top</a>
+  <section id="sec-3" class="w-[100vw] h-[100vh] bg-white">
+    <div class="blob -mr-5 text-center -top-16">
+      <img class="drop-shadow-xl" src={blob4} alt="blob" />
+      <div class="absolute top-32 left-32 w-44 flex flex-col items-center">
+        <h1 class="blob-title">Start Riding Eco-Friendly</h1>
+
+        <div class="bg-white rounded-2xl mt-5">
+          <a href="/auth">
+            <button class="sign-up-button gradient-text rounded-2xl"> Sign Up </button>
+          </a>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+
+    <div class="blob text-center top-30 -mr-10">
+      <img class="scale-150 drop-shadow-xl" src={blob3} alt="blob" />
+      <div class="absolute top-12 left-16 w-56 flex flex-col items-center">
+        <h1 class="blob-title">Driving Innovation for Sustainability</h1>
+        <p class="blob-text w-96">
+          Our Vision for a Greener Tomorrow Empowering eco-conscious individuals to make a positive
+          impact on our planet through sustainable ridesharing experiences, while fostering a sense
+          of community and healthy competition among users, all in pursuit of a greener, more
+          sustainable future for generations to come.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-4" class="w-[100vw] h-[100vh] bg-white">
+    <div class="blob text-center top-20 -ml-10">
+      <img class="scale-[1.75] drop-shadow-xl" src={blob2} alt="blob" />
+      <div class="absolute top-1 left-20 w-56 flex flex-col items-center">
+        <h1 class="blob-title">Climb the Leaderboards with Your Eco Score</h1>
+        <p class="blob-text w-96">
+          Our Eco Score system tracks and rewards your eco-friendly ridesharing choices, allowing
+          you to earn a coveted spot on our leaderboards. Climb to the top by choosing shared rides,
+          opting for electric vehicles, and making eco-conscious decisions. Your journey towards a
+          higher Eco Score not only reflects your dedication but also contributes to a collective
+          effort to reduce carbon emissions. Join the race to the leaderboard and show the world how
+          your rides are making a positive impact on the environment.
+        </p>
+      </div>
+    </div>
+
+    <div class="blob -mr-5 text-center top-24">
+      <img class="drop-shadow-xl" src={blob4} alt="blob" />
+      <div class="absolute top-36 left-20 w-72 flex flex-col items-center">
+        <h1 class="blob-title">Join the Ecoride Movement Today</h1>
+
+        <div class="bg-white rounded-2xl mt-5">
+          <a href="/auth">
+            <button class="sign-up-button gradient-text rounded-2xl">Sign Up</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-5" class="w-[100vw] h-[25vh] bg-white">
+    <div class="blob -mr-24 text-center -top-24">
+      <img class="scale-50 drop-shadow-xl" src={blob2} alt="blob" />
+      <div class="absolute top-[11.75rem] left-16 w-72 flex flex-col items-center">
+        <a class="blob-title" href="#sec-1">Back to top</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    //Make it so you have to scroll 50 pixels below the element for it to appear
+    const appearOptions = {
+      threshold: 1,
+      rootMargin: '0px 0px 0px 0px',
+    };
+
+    //Store all of the elements with the proper classes in arrays
+    const fadeLeft = document.querySelectorAll('.slideAppearLeft');
+    const fadeRight = document.querySelectorAll('.slideAppearRight');
+
+    //Use Intersection Observer so that when the user scrolls over the
+    //proper element it gains the appear class which makes it appear
+    const appearOnScroll = new IntersectionObserver(function (entries, appearOnScroll) {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+          console.log(entry);
+        } else {
+          console.log('poop');
+          entry.target.classList.add('appear');
+          appearOnScroll.unobserve(entry.target);
+        }
+      });
+    }, appearOptions);
+
+    //Observe each of the elements that should fade
+    fadeLeft.forEach((fader) => {
+      appearOnScroll.observe(fader);
+    });
+
+    console.log(fadeRight);
+
+    fadeRight.forEach((fader) => {
+      appearOnScroll.observe(fader);
+    });
+  </script>
+</div>
 
 <style>
   :global(body) {
     background-color: rgb(0, 0, 0);
   }
 
-  .appear.slideAppearLeft {
-    opacity: 1!important;
-    transform: translateX(-100%) !important;
+  .slideAppearLeft .appear {
+    opacity: 1;
+    transform: translateX(100%);
   }
-  .appear.slideAppearRight {
-    opacity: 1!important;
-    transform: translateX(-100%) !important;
+  .slideAppearRight,.appear {
+    opacity: 1;
+    transform: translateX(-100%);
   }
 
-  .slideAppearRight {
-
-  }
   .slideAppearLeft {
-
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: opacity 0.25s;
+    transition: translateX 0.25s;
+  }
+  .slideAppearRight {
+    opacity: 0;
+    transform: translateX(100%);
+    /* transition: opacity 0.25s; */
+    /* transition: translateX 0.25s; */
   }
 
   .gradient-text {

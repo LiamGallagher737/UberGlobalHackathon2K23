@@ -3,7 +3,7 @@
   import { page } from '$app/stores';
 </script>
 
-<p class="gradient-text  text-center text-2xl h-[50vh] relative top-32">
+<p class="gradient-text text-center text-2xl h-[50vh] relative top-32">
   {#if $page.data.session}
     {#if $page.data.session.user?.image}
       <span style="background-image: url('{$page.data.session.user.image}')" class="avatar" />
@@ -16,10 +16,10 @@
       </span>
     </div>
   {:else}
-  <div class="flex flex-col">
-    <p class="notSignedInText">You are not signed in</p>
-    <button class="font-black" on:click={() => signIn('auth0')}>Sign In</button>
-  </div>
+    <div class="flex flex-col">
+      <p class="notSignedInText">You are not signed in</p>
+      <button class="font-black" on:click={() => signIn('auth0')}>Sign In</button>
+    </div>
   {/if}
 </p>
 
