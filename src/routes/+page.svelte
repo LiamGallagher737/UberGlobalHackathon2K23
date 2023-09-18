@@ -51,7 +51,9 @@
       <h1 class="blob-title">Start Riding Eco-Friendly</h1>
 
       <div class="bg-white rounded-2xl mt-5">
-        <button class="sign-up-button gradient-text rounded-2xl"> Sign Up </button>
+        <a href="/auth">
+          <button class="sign-up-button gradient-text rounded-2xl"> Sign Up </button>
+        </a>
       </div>
     </div>
   </div>
@@ -92,7 +94,9 @@
       <h1 class="blob-title">Join the Ecoride Movement Today</h1>
 
       <div class="bg-white rounded-2xl mt-5">
-        <button class="sign-up-button gradient-text rounded-2xl">Sign Up</button>
+        <a href="/auth">
+          <button class="sign-up-button gradient-text rounded-2xl">Sign Up</button>
+        </a>
       </div>
     </div>
   </div>
