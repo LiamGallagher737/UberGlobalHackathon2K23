@@ -48,7 +48,8 @@
               class="rounded text-center text-white px-2 my-1"
               on:click={() => {
                 if (amounts[n] > 1) amounts[n]--;
-              }}>-</button>
+              }}>-</button
+            >
           </div>
           <button class="p-2 w-1/2 rounded-xl text-white font-bold">ENTER</button>
         </div>
