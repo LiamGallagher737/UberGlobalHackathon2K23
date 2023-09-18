@@ -4,6 +4,25 @@
   import blob2 from '$lib/assets/blobs/blob2.svg';
   import blob3 from '$lib/assets/blobs/blob3.svg';
   import blob4 from '$lib/assets/blobs/blob4.svg';
+
+  let options =  {
+    root: document.querySelector('#scrollArea'),
+    rootMargin: '0px',
+    threshhold: 1.0
+  };
+
+  let slideAppear = new IntersectionObserver((entries, slideAppear) => {
+    entries.forEach(entry => {
+      console.log(entry);
+    });
+  }, options);
+
+  let targets = document.querySelectorAll(".slideAppear");
+
+  targets.forEach(target => {
+    slideAppear.observe(target);
+  });
+
 </script>
 
 <section id="sec-1" class="w-[100vw] h-[100vh] bg-white flex justify-center">
@@ -105,7 +124,7 @@
 <section id="sec-5" class="w-[100vw] h-[25vh] bg-white">
   <div class="blob -mr-24 text-center -top-24">
     <img class="scale-50 drop-shadow-xl" src={blob2} alt="blob" />
-    <div class="absolute top-44 left-16 w-72 flex flex-col items-center">
+    <div class="absolute top-[11.75rem] left-16 w-72 flex flex-col items-center">
       <a class="blob-title" href="#sec-1">Back to top</a>
     </div>
   </div>
@@ -114,6 +133,22 @@
 <style>
   :global(body) {
     background-color: rgb(0, 0, 0);
+  }
+
+  .appear.slideAppearLeft {
+    opacity: 1!important;
+    transform: translateX(-100%) !important;
+  }
+  .appear.slideAppearRight {
+    opacity: 1!important;
+    transform: translateX(-100%) !important;
+  }
+
+  .slideAppearRight {
+
+  }
+  .slideAppearLeft {
+
   }
 
   .gradient-text {
