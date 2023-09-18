@@ -66,7 +66,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     } else {
         // Update entry
         const newCount = data.entries + existingEntryResponse[0].count;
-        let res = await conn
+        const res = await conn
             .update(raffleEntries)
             .set({ count: newCount })
             .where(eq(raffleEntries.id, existingEntryResponse[0].id))
@@ -77,7 +77,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         newEntries = newCount;
     }
 
-    let res = await conn
+    const res = await conn
         .update(users)
         .set({ points: userPoints - netCost })
         .where(eq(users.id, userId));

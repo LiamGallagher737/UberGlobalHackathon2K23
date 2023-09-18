@@ -7,8 +7,6 @@
     return fetch('/api/user').then((res) => res.json());
   }
 
-  async function enter() {}
-
   let amounts = Array(data.result.length).fill(1);
 </script>
 
