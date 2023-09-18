@@ -6,7 +6,7 @@
   let signedIn = !!$page.data.session;
 </script>
 
-<section class="flex items-center justify-around h-screen">
+<section class="flex items-center justify-around h-screen bg-white">
   <div
     class="w-4/5 h-1/3 md:w-1/3 md:h-1/2 rounded-3xl shadow-lg shadow-green-400 bg-gray-50 flex flex-col items-center justify-between"
   >
@@ -19,7 +19,7 @@
         <strong>{$page.data.session.user?.name ?? 'User'}</strong>
       </p>
     {:else}
-      <p class="notSignedInText text-red-500 mb-6">You are not signed in</p>
+      <p class="notSignedInText text-red-500 my-6">You are not signed in</p>
     {/if}
 
     <SigninButton {signedIn} on:signIn={signIn} on:signOut={signOut} />
