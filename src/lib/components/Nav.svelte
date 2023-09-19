@@ -1,5 +1,4 @@
 <script lang="ts">
-  import NavMask from '$lib/assets/NavMask.svg';
   import home from '$lib/assets/icons/home.svg';
   import ticket from '$lib/assets/icons/ticket.svg';
   import leaderboard from '$lib/assets/icons/leaderboard.svg';
