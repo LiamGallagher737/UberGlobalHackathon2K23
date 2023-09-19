@@ -5,105 +5,114 @@
   import blob3 from '$lib/assets/blobs/blob3.svg';
   import blob4 from '$lib/assets/blobs/blob4.svg';
 
-  // import { fade } from 'svelte/transition';
-  import { inview } from 'svelte-inview';
-  import type { ObserverEventDetails, Options } from 'svelte-inview';
+  import { fade, fly } from 'svelte/transition';
+  import { quintOut } from 'svelte/easing';
 
-  let isInView: boolean = false;
+  import { inview } from 'svelte-inview';
+  import type { Options } from 'svelte-inview';
+
+  // in view bool for each blob
+  let viewBools = [false, false, false, false, false, false, false];
+
   const options: Options = {
-    rootMargin: '50px',
+    rootMargin: '-100px',
     unobserveOnEnter: true,
   };
 </script>
 
-<div id="scrollArea">
-  <section id="sec-1" class="w-[100vw] h-[100vh] bg-white flex justify-center">
-    <div id="text-wrapper" class="font-thin w-9/12 absolute top-1/4">
+<div id="scrollArea" class="w-fill">
+  <section id="sec-1" class="w-fill bg-white flex justify-center">
+    <div id="text-wrapper" class="font-thin w-9/12 absolute top-16">
       <span class=""><img class="h-15" src={logo} alt="logo" /></span>
       <h1 class="text-center gradient-text font-semibold text-2xl pt-5">
         Unlocking a greener future
       </h1>
     </div>
-  </section>
 
-  <section id="sec-2" class="w-[100vw] h-[120vh] bg-white">
     <div
       use:inview={options}
       on:inview_change={(event) => {
-        const { inView, entry, scrollDirection, observer, node } = event.detail;
-        isInView = inView;
+        const { inView } = event.detail;
+        viewBools[0] = inView;
       }}
-      on:inview_enter={(event) => {
-        const { inView, entry, scrollDirection, observer, node } = event.detail;
-        isInView = inView;
-      }}
-      on:inview_leave={(event) => {
-        const { inView, entry, scrollDirection, observer, node } = event.detail;
-        isInView = inView;
-      }}
-      on:inview_init={(event) => {
-        const { observer, node } = event.detail;
-      }}
-      class="blob -mr-20 text-center top-20"
+      class="blob -mr-[10rem] text-center mt-96"
     >
-      {#if isInView}
-      <div>
-        <img class="scale-150 drop-shadow-xl" src={blob} alt="blob" />
-        <div class="absolute top-5 left-20 w-44 flex flex-col items-center">
-          <h1 class="blob-title">Our Vision for a Greener Tomorrow</h1>
-          <p class="blob-text w-64">
-            Empowering eco-conscious individuals to make a positive impact on our planet through
-            sustainable ridesharing experiences, while fostering a sense of community and healthy
-            competition among users, all in pursuit of a greener, more sustainable future for
-            generations to come.
-          </p>
+      {#if viewBools[0]}
+        <div
+          transition:fly={{ delay: 250, duration: 400, x: 200, opacity: 0, easing: quintOut }}
+          class="-mb-72"
+        >
+          <img class="scale-[1.55] drop-shadow-xl" src={blob} alt="blob" />
+          <div class="relative left-20 -top-[24rem] w-44 flex flex-col items-center">
+            <h1 class="blob-title">Our Vision for a Greener Tomorrow</h1>
+            <p class="blob-text w-64">
+              Empowering eco-conscious individuals to make a positive impact on our planet through
+              sustainable ridesharing experiences, while fostering a sense of community and healthy
+              competition among users, all in pursuit of a greener, more sustainable future for
+              generations to come.
+            </p>
+          </div>
         </div>
-      </div>
       {:else}
-        <p>placeholder</p>
+        <div class="-mb-72 opacity-0">
+          <img class="scale-[1.55] drop-shadow-xl" src={blob} alt="blob" />
+          <div class="relative left-20 -top-[24rem] w-44 flex flex-col items-center">
+            <h1 class="blob-title">Our Vision for a Greener Tomorrow</h1>
+            <p class="blob-text w-64">
+              Empowering eco-conscious individuals to make a positive impact on our planet through
+              sustainable ridesharing experiences, while fostering a sense of community and healthy
+              competition among users, all in pursuit of a greener, more sustainable future for
+              generations to come.
+            </p>
+          </div>
+        </div>
       {/if}
-    </div>
-
-    <div class="blob text-center top-44">
-      <img class="scale-150 drop-shadow-xl" src={blob2} alt="blob" />
-      <div class="absolute top-6 left-24 w-56 flex flex-col items-center">
-        <h1 class="blob-title">Join the Ecoride Community</h1>
-        <p class="blob-text w-96">
-          Ecoride is more than just a rideshare platform; it's a thriving community of like-minded
-          individuals dedicated to eco-conscious transportation. With our Eco Score system, you can
-          actively engage, compete, and collaborate with fellow users to create a greener future.
-          Your rides with Ecoride go beyond commuting; they contribute to a collective mission. Join
-          the Ecoride community today and be a part of the change.
-        </p>
-      </div>
     </div>
   </section>
 
-  <!-- <div
-    use:inview={options}
-    on:inview_change={(event) => {
-      const { inView, entry, scrollDirection, observer, node } = event.detail;
-      isInView = inView;
-    }}
-    on:inview_enter={(event) => {
-      const { inView, entry, scrollDirection, observer, node } = event.detail;
-      isInView = inView;
-    }}
-    on:inview_leave={(event) => {
-      const { inView, entry, scrollDirection, observer, node } = event.detail;
-      isInView = inView;
-    }}
-    on:inview_init={(event) => {
-      const { observer, node } = event.detail;
-    }}
-  >
-    {isInView ? 'Hey I am in the viewport' : 'Bye, Bye'}
-  </div> -->
+  <section id="sec-2" class="w-[100vw] bg-white">
+    <div
+      use:inview={options}
+      on:inview_change={(event) => {
+        const { inView } = event.detail;
+        viewBools[1] = inView;
+      }}
+      class="blob text-center mt-14"
+    >
+      {#if viewBools[1]}
+        <div transition:fly={{ delay: 250, duration: 400, x: -200, opacity: 0, easing: quintOut }}>
+          <img class="scale-[1.6] drop-shadow-xl" src={blob2} alt="blob" />
+          <div class="relative left-16 -top-96 w-56 flex flex-col items-center">
+            <h1 class="blob-title">Join the Ecoride Community</h1>
+            <p class="blob-text w-80">
+              Ecoride is more than just a rideshare platform; it's a thriving community of
+              like-minded individuals dedicated to eco-conscious transportation. With our Eco Score
+              system, you can actively engage, compete, and collaborate with fellow users to create
+              a greener future. Your rides with Ecoride go beyond commuting; they contribute to a
+              collective mission. Join the Ecoride community today and be a part of the change.
+            </p>
+          </div>
+        </div>
+      {:else}
+        <div class="opacity-0">
+          <img class="scale-[1.6] drop-shadow-xl" src={blob2} alt="blob" />
+          <div class="relative left-16 -top-96 w-56 flex flex-col items-center">
+            <h1 class="blob-title">Join the Ecoride Community</h1>
+            <p class="blob-text w-80">
+              Ecoride is more than just a rideshare platform; it's a thriving community of
+              like-minded individuals dedicated to eco-conscious transportation. With our Eco Score
+              system, you can actively engage, compete, and collaborate with fellow users to create
+              a greener future. Your rides with Ecoride go beyond commuting; they contribute to a
+              collective mission. Join the Ecoride community today and be a part of the change.
+            </p>
+          </div>
+        </div>
+      {/if}
+    </div>
 
-  <section id="sec-3" class="w-[100vw] h-[100vh] bg-white">
-    <div class="blob -mr-5 text-center -top-16">
+    <div class="blob -mr-5 text-center -mt-80 -mb-44">
       <img class="drop-shadow-xl" src={blob4} alt="blob" />
-      <div class="absolute top-32 left-32 w-44 flex flex-col items-center">
+      <div class="relative -top-[65vw] left-[30vw] w-44 flex flex-col items-center">
         <h1 class="blob-title">Start Riding Eco-Friendly</h1>
 
         <div class="bg-white rounded-2xl mt-5">
@@ -113,12 +122,14 @@
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="blob text-center top-30 -mr-10">
-      <img class="scale-150 drop-shadow-xl" src={blob3} alt="blob" />
-      <div class="absolute top-12 left-16 w-56 flex flex-col items-center">
+  <section id="sec-3" class="w-[100vw] bg-white">
+    <div class="blob text-center -mr-10 mt-9">
+      <img class="scale-[1.60] drop-shadow-xl" src={blob3} alt="blob" />
+      <div class="relative -top-[23rem] left-12 w-56 flex flex-col items-center">
         <h1 class="blob-title">Driving Innovation for Sustainability</h1>
-        <p class="blob-text w-96">
+        <p class="blob-text w-80">
           Our Vision for a Greener Tomorrow Empowering eco-conscious individuals to make a positive
           impact on our planet through sustainable ridesharing experiences, while fostering a sense
           of community and healthy competition among users, all in pursuit of a greener, more
@@ -126,27 +137,26 @@
         </p>
       </div>
     </div>
-  </section>
 
-  <section id="sec-4" class="w-[100vw] h-[100vh] bg-white">
-    <div class="blob text-center top-20 -ml-10">
+    <div class="blob text-center -ml-10 -mt-32 -mb-60">
       <img class="scale-[1.75] drop-shadow-xl" src={blob2} alt="blob" />
-      <div class="absolute top-1 left-20 w-56 flex flex-col items-center">
+      <div class="relative -top-[25rem] left-20 w-56 flex flex-col items-center">
         <h1 class="blob-title">Climb the Leaderboards with Your Eco Score</h1>
-        <p class="blob-text w-96">
+        <p class="blob-text w-80">
           Our Eco Score system tracks and rewards your eco-friendly ridesharing choices, allowing
           you to earn a coveted spot on our leaderboards. Climb to the top by choosing shared rides,
           opting for electric vehicles, and making eco-conscious decisions. Your journey towards a
           higher Eco Score not only reflects your dedication but also contributes to a collective
-          effort to reduce carbon emissions. Join the race to the leaderboard and show the world how
-          your rides are making a positive impact on the environment.
+          effort to reduce carbon emissions.
         </p>
       </div>
     </div>
+  </section>
 
-    <div class="blob -mr-5 text-center top-24">
-      <img class="drop-shadow-xl" src={blob4} alt="blob" />
-      <div class="absolute top-36 left-20 w-72 flex flex-col items-center">
+  <section id="sec-4" class="w-[100vw] bg-white">
+    <div class="blob -mr-5 text-center -mt-12">
+      <img class="scale-[1.1] drop-shadow-xl" src={blob4} alt="blob" />
+      <div class="relative -top-64 left-16 w-72 flex flex-col items-center">
         <h1 class="blob-title">Join the Ecoride Movement Today</h1>
 
         <div class="bg-white rounded-2xl mt-5">
@@ -156,12 +166,10 @@
         </div>
       </div>
     </div>
-  </section>
 
-  <section id="sec-5" class="w-[100vw] h-[25vh] bg-white">
-    <div class="blob -mr-24 text-center -top-24">
-      <img class="scale-50 drop-shadow-xl" src={blob2} alt="blob" />
-      <div class="absolute top-[11.75rem] left-16 w-72 flex flex-col items-center">
+    <div class="blob -mr-24 text-center -mt-56 -mb-16">
+      <img class="scale-[0.55] drop-shadow-xl" src={blob2} alt="blob" />
+      <div class="relative -top-[13.5rem] left-10 w-72 flex flex-col items-center">
         <a class="blob-title" href="#sec-1">Back to top</a>
       </div>
     </div>
@@ -185,7 +193,6 @@
   .blob {
     float: right !important;
     width: 100%;
-    position: relative;
     height: auto;
   }
 
