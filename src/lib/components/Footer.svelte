@@ -3,11 +3,11 @@
   import phoneIcon from '$lib/assets/phone.svg';
 </script>
 
-<section id="footer" class="w-[100vw] h-[50vh] bg-grad">
-  <div class="top-5 relative text-center">
+<section id="footer" class="w-[100vw] bg-grad">
+  <div class=" text-center pt-2">
     <h1 class="blob-title">Quick links</h1>
 
-    <ul class="blob-text flex flex-col gap-1 relative top-2">
+    <ul class="blob-text flex flex-col gap-1">
       <li><a href="/"><strong>Home</strong></a></li>
       <li><a href="/ride"><strong>Ride</strong></a></li>
       <li><a href="/leaderboard"><strong>Leaderboard</strong></a></li>
@@ -17,10 +17,10 @@
     </ul>
   </div>
 
-  <div class="top-16 relative text-center">
+  <div class="text-center pt-2">
     <h1 class="blob-title">Contact us</h1>
 
-    <ul class="relative top-2">
+    <ul class="pb-2">
       <li>
         <div class="flex justify-center">
           <img class="scale-150" src={mailIcon} alt="mail icon" />
