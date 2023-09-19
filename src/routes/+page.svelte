@@ -5,7 +5,7 @@
   import blob3 from '$lib/assets/blobs/blob3.svg';
   import blob4 from '$lib/assets/blobs/blob4.svg';
 
-  import { fade, fly } from 'svelte/transition';
+  import { fly } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
 
   import { inview } from 'svelte-inview';
@@ -110,68 +110,183 @@
       {/if}
     </div>
 
-    <div class="blob -mr-5 text-center -mt-80 -mb-44">
-      <img class="drop-shadow-xl" src={blob4} alt="blob" />
-      <div class="relative -top-[65vw] left-[30vw] w-44 flex flex-col items-center">
-        <h1 class="blob-title">Start Riding Eco-Friendly</h1>
+    <div
+      use:inview={options}
+      on:inview_change={(event) => {
+        const { inView } = event.detail;
+        viewBools[2] = inView;
+      }}
+      class="blob -mr-5 text-center -mt-80 -mb-44"
+    >
+      {#if viewBools[2]}
+        <div transition:fly={{ delay: 250, duration: 400, x: -200, opacity: 0, easing: quintOut }}>
+          <img class="drop-shadow-xl" src={blob4} alt="blob" />
+          <div class="relative -top-[65vw] left-[30vw] w-44 flex flex-col items-center">
+            <h1 class="blob-title">Start Riding Eco-Friendly</h1>
 
-        <div class="bg-white rounded-2xl mt-5">
-          <a href="/auth">
-            <button class="sign-up-button gradient-text rounded-2xl"> Sign Up </button>
-          </a>
+            <div class="bg-white rounded-2xl mt-5">
+              <a href="/auth">
+                <button class="sign-up-button gradient-text rounded-2xl"> Sign Up </button>
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
+      {:else}
+        <div class="opacity-0">
+          <img class="drop-shadow-xl" src={blob4} alt="blob" />
+          <div class="relative -top-[65vw] left-[30vw] w-44 flex flex-col items-center">
+            <h1 class="blob-title">Start Riding Eco-Friendly</h1>
+
+            <div class="bg-white rounded-2xl mt-5">
+              <a href="/auth">
+                <button class="sign-up-button gradient-text rounded-2xl"> Sign Up </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      {/if}
     </div>
   </section>
 
   <section id="sec-3" class="w-[100vw] bg-white">
-    <div class="blob text-center -mr-10 mt-9">
-      <img class="scale-[1.60] drop-shadow-xl" src={blob3} alt="blob" />
-      <div class="relative -top-[23rem] left-12 w-56 flex flex-col items-center">
-        <h1 class="blob-title">Driving Innovation for Sustainability</h1>
-        <p class="blob-text w-80">
-          Our Vision for a Greener Tomorrow Empowering eco-conscious individuals to make a positive
-          impact on our planet through sustainable ridesharing experiences, while fostering a sense
-          of community and healthy competition among users, all in pursuit of a greener, more
-          sustainable future for generations to come.
-        </p>
-      </div>
+    <div
+      use:inview={options}
+      on:inview_change={(event) => {
+        const { inView } = event.detail;
+        viewBools[3] = inView;
+      }}
+      class="blob text-center -mr-10 mt-9"
+    >
+      {#if viewBools[3]}
+        <div transition:fly={{ delay: 250, duration: 400, x: 200, opacity: 0, easing: quintOut }}>
+          <img class="scale-[1.60] drop-shadow-xl" src={blob3} alt="blob" />
+          <div class="relative -top-[23rem] left-12 w-56 flex flex-col items-center">
+            <h1 class="blob-title">Driving Innovation for Sustainability</h1>
+            <p class="blob-text w-80">
+              Our Vision for a Greener Tomorrow Empowering eco-conscious individuals to make a
+              positive impact on our planet through sustainable ridesharing experiences, while
+              fostering a sense of community and healthy competition among users, all in pursuit of
+              a greener, more sustainable future for generations to come.
+            </p>
+          </div>
+        </div>
+      {:else}
+        <div class="opacity-0">
+          <img class="scale-[1.60] drop-shadow-xl" src={blob3} alt="blob" />
+          <div class="relative -top-[23rem] left-12 w-56 flex flex-col items-center">
+            <h1 class="blob-title">Driving Innovation for Sustainability</h1>
+            <p class="blob-text w-80">
+              Our Vision for a Greener Tomorrow Empowering eco-conscious individuals to make a
+              positive impact on our planet through sustainable ridesharing experiences, while
+              fostering a sense of community and healthy competition among users, all in pursuit of
+              a greener, more sustainable future for generations to come.
+            </p>
+          </div>
+        </div>
+      {/if}
     </div>
 
-    <div class="blob text-center -ml-10 -mt-32 -mb-60">
-      <img class="scale-[1.75] drop-shadow-xl" src={blob2} alt="blob" />
-      <div class="relative -top-[25rem] left-20 w-56 flex flex-col items-center">
-        <h1 class="blob-title">Climb the Leaderboards with Your Eco Score</h1>
-        <p class="blob-text w-80">
-          Our Eco Score system tracks and rewards your eco-friendly ridesharing choices, allowing
-          you to earn a coveted spot on our leaderboards. Climb to the top by choosing shared rides,
-          opting for electric vehicles, and making eco-conscious decisions. Your journey towards a
-          higher Eco Score not only reflects your dedication but also contributes to a collective
-          effort to reduce carbon emissions.
-        </p>
-      </div>
+    <div
+      use:inview={options}
+      on:inview_change={(event) => {
+        const { inView } = event.detail;
+        viewBools[4] = inView;
+      }}
+      class="blob text-center -ml-10 -mt-32 -mb-60"
+    >
+      {#if viewBools[4]}
+        <div transition:fly={{ delay: 250, duration: 400, x: -200, opacity: 0, easing: quintOut }}>
+          <img class="scale-[1.75] drop-shadow-xl" src={blob2} alt="blob" />
+          <div class="relative -top-[25rem] left-20 w-56 flex flex-col items-center">
+            <h1 class="blob-title">Climb the Leaderboards with Your Eco Score</h1>
+            <p class="blob-text w-80">
+              Our Eco Score system tracks and rewards your eco-friendly ridesharing choices,
+              allowing you to earn a coveted spot on our leaderboards. Climb to the top by choosing
+              shared rides, opting for electric vehicles, and making eco-conscious decisions. Your
+              journey towards a higher Eco Score not only reflects your dedication but also
+              contributes to a collective effort to reduce carbon emissions.
+            </p>
+          </div>
+        </div>
+      {:else}
+        <div class="opacity-0">
+          <img class="scale-[1.75] drop-shadow-xl" src={blob2} alt="blob" />
+          <div class="relative -top-[25rem] left-20 w-56 flex flex-col items-center">
+            <h1 class="blob-title">Climb the Leaderboards with Your Eco Score</h1>
+            <p class="blob-text w-80">
+              Our Eco Score system tracks and rewards your eco-friendly ridesharing choices,
+              allowing you to earn a coveted spot on our leaderboards. Climb to the top by choosing
+              shared rides, opting for electric vehicles, and making eco-conscious decisions. Your
+              journey towards a higher Eco Score not only reflects your dedication but also
+              contributes to a collective effort to reduce carbon emissions.
+            </p>
+          </div>
+        </div>
+      {/if}
     </div>
   </section>
 
   <section id="sec-4" class="w-[100vw] bg-white">
-    <div class="blob -mr-5 text-center -mt-12">
-      <img class="scale-[1.1] drop-shadow-xl" src={blob4} alt="blob" />
-      <div class="relative -top-64 left-16 w-72 flex flex-col items-center">
-        <h1 class="blob-title">Join the Ecoride Movement Today</h1>
+    <div
+      use:inview={options}
+      on:inview_change={(event) => {
+        const { inView } = event.detail;
+        viewBools[5] = inView;
+      }}
+      class="blob -mr-5 text-center -mt-12"
+    >
+      {#if viewBools[5]}
+        <div transition:fly={{ delay: 250, duration: 400, x: 200, opacity: 0, easing: quintOut }}>
+          <img class="scale-[1.1] drop-shadow-xl" src={blob4} alt="blob" />
+          <div class="relative -top-64 left-16 w-72 flex flex-col items-center">
+            <h1 class="blob-title">Join the Ecoride Movement Today</h1>
 
-        <div class="bg-white rounded-2xl mt-5">
-          <a href="/auth">
-            <button class="sign-up-button gradient-text rounded-2xl">Sign Up</button>
-          </a>
+            <div class="bg-white rounded-2xl mt-5">
+              <a href="/auth">
+                <button class="sign-up-button gradient-text rounded-2xl">Sign Up</button>
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
+      {:else}
+        <div class="opacity-0">
+          <img class="scale-[1.1] drop-shadow-xl" src={blob4} alt="blob" />
+          <div class="relative -top-64 left-16 w-72 flex flex-col items-center">
+            <h1 class="blob-title">Join the Ecoride Movement Today</h1>
+
+            <div class="bg-white rounded-2xl mt-5">
+              <a href="/auth">
+                <button class="sign-up-button gradient-text rounded-2xl">Sign Up</button>
+              </a>
+            </div>
+          </div>
+        </div>
+      {/if}
     </div>
 
-    <div class="blob -mr-24 text-center -mt-56 -mb-16">
-      <img class="scale-[0.55] drop-shadow-xl" src={blob2} alt="blob" />
-      <div class="relative -top-[13.5rem] left-10 w-72 flex flex-col items-center">
-        <a class="blob-title" href="#sec-1">Back to top</a>
-      </div>
+    <div
+      use:inview={options}
+      on:inview_change={(event) => {
+        const { inView } = event.detail;
+        viewBools[6] = inView;
+      }}
+      class="blob -mr-24 text-center -mt-56 -mb-16"
+    >
+      {#if viewBools[6]}
+        <div transition:fly={{ delay: 250, duration: 400, x: 200, opacity: 0, easing: quintOut }}>
+          <img class="scale-[0.55] drop-shadow-xl" src={blob2} alt="blob" />
+          <div class="relative -top-[13.5rem] left-10 w-72 flex flex-col items-center">
+            <a class="blob-title" href="#sec-1">Back to top</a>
+          </div>
+        </div>
+      {:else}
+        <div class="opacity-0">
+          <img class="scale-[0.55] drop-shadow-xl" src={blob2} alt="blob" />
+          <div class="relative -top-[13.5rem] left-10 w-72 flex flex-col items-center">
+            <a class="blob-title" href="#sec-1">Back to top</a>
+          </div>
+        </div>
+      {/if}
     </div>
   </section>
 </div>
