@@ -17,7 +17,11 @@
   {#await getUser()}
     Loading...
   {:then data}
-    {data.points}ep
+    {#if data.typeof == undefined}
+      Login to view current ep
+    {:else}
+      {data.points}ep
+    {/if}
   {/await}
 </p>
 <p class="gradient-text text-center font-bold text-2xl mt-5">Available raffles:</p>
