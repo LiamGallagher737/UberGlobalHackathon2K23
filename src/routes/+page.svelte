@@ -4,6 +4,16 @@
   import blob2 from '$lib/assets/blobs/blob2.svg';
   import blob3 from '$lib/assets/blobs/blob3.svg';
   import blob4 from '$lib/assets/blobs/blob4.svg';
+
+  // import { fade } from 'svelte/transition';
+  import { inview } from 'svelte-inview';
+  import type { ObserverEventDetails, Options } from 'svelte-inview';
+
+  let isInView: boolean = false;
+  const options: Options = {
+    rootMargin: '50px',
+    unobserveOnEnter: true,
+  };
 </script>
 
 <div id="scrollArea">
@@ -17,17 +27,41 @@
   </section>
 
   <section id="sec-2" class="w-[100vw] h-[120vh] bg-white">
-    <div class="blob -mr-20 text-center top-20">
-      <img class="scale-150 drop-shadow-xl" src={blob} alt="blob" />
-      <div class="absolute top-5 left-20 w-44 flex flex-col items-center">
-        <h1 class="blob-title slideAppearRight">Our Vision for a Greener Tomorrow</h1>
-        <p class="blob-text w-64">
-          Empowering eco-conscious individuals to make a positive impact on our planet through
-          sustainable ridesharing experiences, while fostering a sense of community and healthy
-          competition among users, all in pursuit of a greener, more sustainable future for
-          generations to come.
-        </p>
+    <div
+      use:inview={options}
+      on:inview_change={(event) => {
+        const { inView, entry, scrollDirection, observer, node } = event.detail;
+        isInView = inView;
+      }}
+      on:inview_enter={(event) => {
+        const { inView, entry, scrollDirection, observer, node } = event.detail;
+        isInView = inView;
+      }}
+      on:inview_leave={(event) => {
+        const { inView, entry, scrollDirection, observer, node } = event.detail;
+        isInView = inView;
+      }}
+      on:inview_init={(event) => {
+        const { observer, node } = event.detail;
+      }}
+      class="blob -mr-20 text-center top-20"
+    >
+      {#if isInView}
+      <div>
+        <img class="scale-150 drop-shadow-xl" src={blob} alt="blob" />
+        <div class="absolute top-5 left-20 w-44 flex flex-col items-center">
+          <h1 class="blob-title">Our Vision for a Greener Tomorrow</h1>
+          <p class="blob-text w-64">
+            Empowering eco-conscious individuals to make a positive impact on our planet through
+            sustainable ridesharing experiences, while fostering a sense of community and healthy
+            competition among users, all in pursuit of a greener, more sustainable future for
+            generations to come.
+          </p>
+        </div>
       </div>
+      {:else}
+        <p>placeholder</p>
+      {/if}
     </div>
 
     <div class="blob text-center top-44">
@@ -44,6 +78,27 @@
       </div>
     </div>
   </section>
+
+  <!-- <div
+    use:inview={options}
+    on:inview_change={(event) => {
+      const { inView, entry, scrollDirection, observer, node } = event.detail;
+      isInView = inView;
+    }}
+    on:inview_enter={(event) => {
+      const { inView, entry, scrollDirection, observer, node } = event.detail;
+      isInView = inView;
+    }}
+    on:inview_leave={(event) => {
+      const { inView, entry, scrollDirection, observer, node } = event.detail;
+      isInView = inView;
+    }}
+    on:inview_init={(event) => {
+      const { observer, node } = event.detail;
+    }}
+  >
+    {isInView ? 'Hey I am in the viewport' : 'Bye, Bye'}
+  </div> -->
 
   <section id="sec-3" class="w-[100vw] h-[100vh] bg-white">
     <div class="blob -mr-5 text-center -top-16">
@@ -111,71 +166,11 @@
       </div>
     </div>
   </section>
-
-  <script>
-    //Make it so you have to scroll 50 pixels below the element for it to appear
-    const appearOptions = {
-      threshold: 1,
-      rootMargin: '0px 0px 0px 0px',
-    };
-
-    //Store all of the elements with the proper classes in arrays
-    const fadeLeft = document.querySelectorAll('.slideAppearLeft');
-    const fadeRight = document.querySelectorAll('.slideAppearRight');
-
-    //Use Intersection Observer so that when the user scrolls over the
-    //proper element it gains the appear class which makes it appear
-    const appearOnScroll = new IntersectionObserver(function (entries, appearOnScroll) {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-          return;
-          console.log(entry);
-        } else {
-          console.log('poop');
-          entry.target.classList.add('appear');
-          appearOnScroll.unobserve(entry.target);
-        }
-      });
-    }, appearOptions);
-
-    //Observe each of the elements that should fade
-    fadeLeft.forEach((fader) => {
-      appearOnScroll.observe(fader);
-    });
-
-    console.log(fadeRight);
-
-    fadeRight.forEach((fader) => {
-      appearOnScroll.observe(fader);
-    });
-  </script>
 </div>
 
 <style>
   :global(body) {
     background-color: rgb(0, 0, 0);
-  }
-
-  .slideAppearLeft .appear {
-    opacity: 1;
-    transform: translateX(100%);
-  }
-  .slideAppearRight,.appear {
-    opacity: 1;
-    transform: translateX(-100%);
-  }
-
-  .slideAppearLeft {
-    opacity: 0;
-    transform: translateX(-100%);
-    transition: opacity 0.25s;
-    transition: translateX 0.25s;
-  }
-  .slideAppearRight {
-    opacity: 0;
-    transform: translateX(100%);
-    /* transition: opacity 0.25s; */
-    /* transition: translateX 0.25s; */
   }
 
   .gradient-text {
