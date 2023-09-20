@@ -1,5 +1,6 @@
 import { conn } from '$lib/db/conn.server';
 import { journeys, users } from '$lib/db/schema';
+import forceLogin from '$lib/forceLogin';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
@@ -12,11 +13,7 @@ type TakeJourneyData = {
  * @returns The new amount of points that the user has
  */
 export const POST: RequestHandler = async ({ locals, request }) => {
-    const session = await locals.getSession();
-
-    if (!session?.user?.email) throw error(401, 'No session provided');
-
-    const email = session.user.email;
+    const email = await forceLogin(locals);
 
     const data: TakeJourneyData = await request.json();
 
