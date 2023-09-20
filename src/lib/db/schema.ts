@@ -13,7 +13,7 @@ export const users = pgTable('user', {
         .default(
             'https://upload.wikimedia.org/wikipedia/commons/1/14/9-94702_user-outline-icon-clipart-png-download-profile-icon.png'
         ),
-    cars: jsonb('cars').$type<{name: string, id: string}>().array(),
+    cars: jsonb('cars').$type<{ name: string, id: string }>().array(),
 });
 
 export const journeys = pgTable('journeys', {
