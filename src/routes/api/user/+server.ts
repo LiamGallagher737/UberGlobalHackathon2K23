@@ -9,7 +9,7 @@ import { eq } from 'drizzle-orm';
  * @returns User data
  */
 export const GET: RequestHandler = async ({ locals }) => {
-    const email = await forceLogin(locals);
+    const { email } = await forceLogin(locals);
 
     const results = await conn.select().from(users).where(eq(users.email, email));
 

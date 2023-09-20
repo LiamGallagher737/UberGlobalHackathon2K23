@@ -16,7 +16,7 @@ export const PUT: RequestHandler = async ({ locals, request }) => {
     const data: RequestData = await request.json();
     if (data.private === undefined) throw error(422, "No 'private' field provided");
 
-    const email = await forceLogin(locals);
+    const { email } = await forceLogin(locals);
 
     const result = await conn
         .update(users)

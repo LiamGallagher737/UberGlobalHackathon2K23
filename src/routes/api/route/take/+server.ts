@@ -13,7 +13,7 @@ type TakeJourneyData = {
  * @returns The new amount of points that the user has
  */
 export const POST: RequestHandler = async ({ locals, request }) => {
-    const email = await forceLogin(locals);
+    const { email } = await forceLogin(locals);
 
     const data: TakeJourneyData = await request.json();
 
