@@ -30,7 +30,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     console.log(data);
 
-    const { email, session } = await forceLogin(locals)
+    const { email, session } = await forceLogin(locals);
 
     const userQuery = conn
         .select({ id: users.id })

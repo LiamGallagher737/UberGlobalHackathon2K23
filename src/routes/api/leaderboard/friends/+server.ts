@@ -9,7 +9,7 @@ import { desc, eq, inArray } from 'drizzle-orm';
  * @returns Friends names and points in descending order of points
  */
 export const GET: RequestHandler = async ({ locals }) => {
-    const { email } = await forceLogin(locals)
+    const { email } = await forceLogin(locals);
 
     const userResults = await conn
         .select({ name: users.name, points: users.points, friends: users.friends })
