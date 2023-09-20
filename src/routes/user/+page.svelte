@@ -26,7 +26,7 @@
   }
 </script>
 
-<div class="bg-green-400 flex flex-col justify-center items-center p-12">
+<div class="bg-grad flex flex-col justify-center items-center pt-5 pb-[50vh]">
   <Profile
     name={data.name}
     isPrivate={data.private}
@@ -34,12 +34,12 @@
     pfp={data.pfp ?? 'https://tenor.com/view/milksuck-cuteguy-filter-gif-25312572'}
   />
 
-  <div class="mb-60 flex flex-col justify-center items-center">
+  <div class="mb-60 flex flex-col justify-center items-center mt-5">
     {#await friendURIPromise}
       <div />
     {:then friendURI}
       <button
-        class="bg-green-800 hover:underline rounded-lg text-green-100 p-1"
+        class="gradient-border hover:underline rounded-lg p-1"
         on:click={() => {
           navigator.clipboard.writeText(friendURI);
         }}
@@ -49,12 +49,24 @@
         <span class="text-xs text-bold"> copy </span>
       </button>
     {/await}
+
     <button
       on:click={() => {
         setPrivate(!data.private);
       }}
-      class="bg-green-800 rounded-lg text-green-100 p-1 mt-2"
-      >Make {data.private ? 'public' : 'private'}</button
+      class="gradient-border rounded-lg p-1 mt-2">Make {data.private ? 'public' : 'private'}</button
     >
   </div>
 </div>
+
+<style>
+  .gradient-border {
+    background: linear-gradient(#fff, #fff) padding-box,
+      linear-gradient(135deg, #f3ed47, #2adc7d) border-box;
+    border: 5px solid transparent;
+  }
+
+  .bg-grad {
+    background-image: linear-gradient(to bottom right, #f3ed47, #2adc7d);
+  }
+</style>
