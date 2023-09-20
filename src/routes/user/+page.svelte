@@ -27,7 +27,12 @@
 </script>
 
 <div class="bg-green-400 flex flex-col justify-center items-center p-12">
-  <Profile name={data.name} isPrivate={data.private} points={data.points} pfp={data.image ?? ''} />
+  <Profile
+    name={data.name}
+    isPrivate={data.private}
+    points={data.points}
+    pfp={data.pfp ?? 'https://tenor.com/view/milksuck-cuteguy-filter-gif-25312572'}
+  />
 
   <div class="mb-60 flex flex-col justify-center items-center">
     {#await friendURIPromise}
