@@ -54,8 +54,7 @@
       on:click={() => {
         setPrivate(!data.private);
       }}
-      class="gradient-border rounded-lg p-1 mt-2"
-      >Make {data.private ? 'public' : 'private'}</button
+      class="gradient-border rounded-lg p-1 mt-2">Make {data.private ? 'public' : 'private'}</button
     >
   </div>
 </div>

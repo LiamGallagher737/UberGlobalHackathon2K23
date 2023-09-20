@@ -9,7 +9,11 @@
 <div
   class="gradient-border flex flex-col items-center justify-start filter drop-shadow-md p-2 rounded-2xl px-10"
 >
-  <img src={pfp} class="w-24 h-24 object-cover rounded-full mb-5" alt="{name} looking their best." />
+  <img
+    src={pfp}
+    class="w-24 h-24 object-cover rounded-full mb-5"
+    alt="{name} looking their best."
+  />
 
   <p class="gradient-text text-4xl filter drop-shadow-xl mb-5">{name}</p>
 
