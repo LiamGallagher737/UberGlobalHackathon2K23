@@ -16,8 +16,8 @@
   export let startMarker: google.maps.Marker;
   export let endMarker: google.maps.Marker;
 
-  export let startLocation: string ;
-  export let endLocation: string ;
+  export let startLocation: string;
+  export let endLocation: string;
 
   export let startSet: boolean = false;
   export let endSet: boolean = false;
