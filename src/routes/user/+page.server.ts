@@ -1,9 +1,9 @@
-import { error, redirect } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import forceLogin from '$lib/forceLogin';
 
 export const load: PageServerLoad = async ({ locals, fetch }) => {
-    const session = await locals.getSession();
-    if (!session?.user?.email) throw redirect(302, '/auth');
+    await forceLogin(locals);
 
     const query = await fetch('/api/user');
     if (!query.ok) throw error(404, "We couldn't find you");
