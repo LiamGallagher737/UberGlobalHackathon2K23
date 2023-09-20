@@ -11,11 +11,13 @@ import { conn } from '$lib/db/conn.server';
 import { journeys, users } from '$lib/db/schema';
 import type { Session } from '@auth/core/types';
 import { eq } from 'drizzle-orm';
+import { vehicle } from '$lib/emissions';
+import forceLogin from '$lib/forceLogin';
 
-type RouteFinderData = {
-    start: LatLng | undefined;
-    destination: LatLng | undefined;
-    carPointMultiplier: number | undefined;
+export type RouteFinderData = {
+    start: LatLng;
+    destination: LatLng;
+    carEmissionsId: string;
 };
 
 /**
@@ -28,20 +30,18 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     console.log(data);
 
-    const session = await locals.getSession();
-
-    if (!session?.user?.email) throw error(401, 'No session provided');
+    const { email, session } = await forceLogin(locals);
 
     const userQuery = conn
         .select({ id: users.id })
         .from(users)
-        .where(eq(users.email, session.user?.email))
+        .where(eq(users.email, email))
         .limit(1);
 
     if (!data?.start || !data?.destination)
         throw error(422, 'Start or Destination was not provided');
 
-    data.carPointMultiplier ??= 1;
+    const pointMultiplier = CalculatePointMultiplier(data.carEmissionsId);
 
     const response = await client.directions({
         params: {
@@ -66,7 +66,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
     const polyline = response.data.routes[0].overview_polyline.points;
 
     //calculate points
-    const points = CalculatePoints(distance, time, data.carPointMultiplier);
+    const points = CalculatePoints(distance, time, await pointMultiplier);
 
     const user = (await userQuery)[0];
     if (!user.id) throw error(500, 'Unable to find user');
@@ -81,6 +81,16 @@ export const POST: RequestHandler = async ({ locals, request }) => {
         path: polyline,
     });
 };
+
+async function CalculatePointMultiplier(mode: string) {
+    if (mode == 'walking') {
+        return 15;
+    } else {
+        const res = await vehicle(mode);
+        if (!res.emissionsList) throw new Error('Vehicle has no emissions data');
+        return parseInt(res.emissionsList?.emissionsInfo[0].score);
+    }
+}
 
 function CalculatePoints(distance: number, time: number, pointMultiplier: number): number {
     return distance * pointMultiplier;

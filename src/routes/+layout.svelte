@@ -1,12 +1,24 @@
 <script lang="ts">
-  import Navbar from '$lib/components/Navbar.svelte';
+  import Nav from '$lib/components/Nav.svelte';
   import '../app.css';
 </script>
 
-<Navbar />
+<div class="w-full px-4 fixed z-30 bottom-6 max-w-md left-1/2 -translate-x-1/2">
+  <Nav />
+</div>
+
 <main class="">
   <slot />
 </main>
 
 <style>
+  :global(body) {
+    background-color: white;
+  }
+
+  main {
+    background-color: white;
+    overflow-x: hidden;
+    scroll-behavior: smooth !important;
+  }
 </style>

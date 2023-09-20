@@ -1,4 +1,4 @@
-import { char, integer, pgTable, text, serial, boolean, date } from 'drizzle-orm/pg-core';
+import { char, integer, pgTable, text, serial, boolean, date, jsonb } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('user', {
     id: serial('id').notNull().primaryKey().unique(),
@@ -8,6 +8,12 @@ export const users = pgTable('user', {
     code: char('code', { length: 8 }).notNull().unique(),
     friends: integer('friends').array(),
     private: boolean('private').notNull().default(false),
+    pfp: text('pfp')
+        .notNull()
+        .default(
+            'https://upload.wikimedia.org/wikipedia/commons/1/14/9-94702_user-outline-icon-clipart-png-download-profile-icon.png'
+        ),
+    cars: jsonb('cars').$type<{ name: string; id: string }[]>(),
 });
 
 export const journeys = pgTable('journeys', {
