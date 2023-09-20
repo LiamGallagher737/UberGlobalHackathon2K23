@@ -32,4 +32,5 @@
       </li>
     {/each}
   </ol>
+  <a href="/leaderboards/friends" class="px-4 py-2 bg-accent text-white font-semibold text-xl rounded-md mt-4">View friends leaderboard</a>
 </section>
