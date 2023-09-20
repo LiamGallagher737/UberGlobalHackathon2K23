@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { expoIn, expoOut } from 'svelte/easing';
+  import { expoIn } from 'svelte/easing';
   import { fade } from 'svelte/transition';
 
   export let data: {
