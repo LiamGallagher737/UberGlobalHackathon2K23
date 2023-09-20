@@ -17,9 +17,9 @@
 </script>
 
 <section class="w-screen h-screen flex flex-col items-center justify-center">
-  {#if data.result && data.result.length !== 0}
+  {#if data.leaderboard && data.leaderboard.length !== 0}
     <ol class="w-5/6">
-      {#each data.result as entry, n}
+      {#each data.leaderboard as entry, n}
         <li
           class="flex justify-between w-full shadow-md rounded-md items-stretch p-5 mb-2 {backgroundColor(
             n
