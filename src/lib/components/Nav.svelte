@@ -26,7 +26,7 @@
   <div class="px-14" />
 
   <div class="flex flex-row justify-between flex-grow mr-6">
-    <a href="/leaderboard">
+    <a href="/leaderboards/global">
       <img class="normal-link" width="45" height="45" src={leaderboard} alt="Leaderboard" />
     </a>
     <a href="/user">
