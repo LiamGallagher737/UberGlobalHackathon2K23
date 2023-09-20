@@ -4,7 +4,7 @@ import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
 /**
- * Get the data of a user with their session
+ * Get the data of your user with their session
  * @returns User data
  */
 export const GET: RequestHandler = async ({ locals }) => {
