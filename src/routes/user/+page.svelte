@@ -40,20 +40,16 @@
     {#await friendURIPromise}
       <div />
     {:then friendURI}
-      <p
-        class="bg-green-800 rounded-lg text-green-100 p-1"
+      <button
+        class="bg-green-800 hover:underline rounded-lg text-green-100 p-1"
+        on:click={() => {
+          navigator.clipboard.writeText(friendURI);
+        }}
         transition:fade={{ delay: 0, duration: 1000, easing: expoIn }}
       >
         {friendURI}
-        <button
-          class="hover:underline text-xs text-bold"
-          on:click={() => {
-            navigator.clipboard.writeText(friendURI);
-          }}
-        >
-          copy
-        </button>
-      </p>
+        <span class="text-xs text-bold"> copy </span>
+      </button>
     {/await}
     <button
       on:click={() => {

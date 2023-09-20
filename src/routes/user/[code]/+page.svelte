@@ -23,7 +23,7 @@
 <div class="mt-16" />
 
 <div class="flex flex-col items-center justify-start">
-  <Profile name={data.name} isPrivate={true} />
+  <Profile name={data.name} isPrivate={false} points={data.points} />
 
   {#if data.isFriend}
     <button
