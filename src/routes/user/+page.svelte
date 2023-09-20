@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { invalidateAll } from '$app/navigation';
+  import Profile from '$lib/components/Profile.svelte';
   import { onMount } from 'svelte';
   import { expoIn } from 'svelte/easing';
   import { fade } from 'svelte/transition';
@@ -19,21 +21,22 @@
       resolve(`${BASE_URI}/user/${data.code}`);
     });
   });
+
+  async function setPrivate(isPrivate: boolean) {
+    const req = await fetch('/api/user/private', {
+      method: 'put',
+      body: JSON.stringify({ private: isPrivate }),
+    });
+
+    invalidateAll();
+    return req.ok;
+  }
 </script>
 
-<div class="bg-green-500 flex flex-col justify-center items-center p-12">
-  <p
-    class="text-green-500 font-bold text-xl drop-shadow-xl {!data.private
-      ? 'bg-blue-200'
-      : 'bg-orange-200'} rounded-lg p-1 mt-20"
-  >
-    {data.private ? 'Private' : 'Public'}
-  </p>
-  <p class="mb-4 text-green-200 text-5xl filter drop-shadow-xl">{data.name}</p>
-  <p class="mb-20 text-green-800 text-3xl filter drop-shadow-xl">
-    {data.points} <span class="text-sm">points</span>
-  </p>
-  <div class="mb-60">
+<div class="bg-green-400 flex flex-col justify-center items-center p-12">
+  <Profile name={data.name} isPrivate={data.private} points={data.points} />
+
+  <div class="mb-60 flex flex-col justify-center items-center">
     {#await friendURIPromise}
       <div />
     {:then friendURI}
@@ -52,5 +55,12 @@
         </button>
       </p>
     {/await}
+    <button
+      on:click={() => {
+        setPrivate(!data.private);
+      }}
+      class="bg-green-800 rounded-lg text-green-100 p-1 mt-2"
+      >Make {data.private ? 'public' : 'private'}</button
+    >
   </div>
 </div>
