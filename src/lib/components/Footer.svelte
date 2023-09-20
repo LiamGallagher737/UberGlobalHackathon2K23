@@ -4,21 +4,7 @@
 </script>
 
 <section id="footer" class="w-[100vw] bg-grad">
-  <div class=" text-center pt-2">
-    <h1 class="blob-title">Quick links</h1>
-
-    <ul class="blob-text flex flex-col gap-1">
-      <li><a href="/"><strong>Home</strong></a></li>
-      <li><a href="/ride"><strong>Ride</strong></a></li>
-      <li><a href="/leaderboard"><strong>Leaderboard</strong></a></li>
-      <li><a href="/user"><strong>Profile</strong></a></li>
-      <li><a href="/raffles"><strong>Raffles</strong></a></li>
-      <li><a href="/about"><strong>About</strong></a></li>
-      <li><a href="/contact"><strong>Contact</strong></a></li>
-    </ul>
-  </div>
-
-  <div class="text-center pt-2">
+  <div class="text-center pb-44 pt-5">
     <h1 class="blob-title">Contact us</h1>
 
     <ul class="pb-2">
