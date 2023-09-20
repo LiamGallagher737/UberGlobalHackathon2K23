@@ -1,5 +1,6 @@
 import { conn } from '$lib/db/conn.server';
 import { users } from '$lib/db/schema';
+import forceLogin from '$lib/forceLogin';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { desc, eq, inArray } from 'drizzle-orm';
 
@@ -8,15 +9,12 @@ import { desc, eq, inArray } from 'drizzle-orm';
  * @returns Friends names and points in descending order of points
  */
 export const GET: RequestHandler = async ({ locals }) => {
-    const session = await locals.getSession();
-    if (session === null) throw error(401, 'Session not found');
-
-    if (!session.user?.email) throw error(500, 'Session email not found');
+    const { email } = await forceLogin(locals)
 
     const userResults = await conn
         .select({ name: users.name, points: users.points, friends: users.friends })
         .from(users)
-        .where(eq(users.email, session.user.email));
+        .where(eq(users.email, email));
 
     if (userResults.length === 0) throw error(404, 'User not found');
     const user = userResults[0];

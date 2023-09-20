@@ -1,5 +1,6 @@
 import { conn } from '$lib/db/conn.server';
 import { users } from '$lib/db/schema';
+import forceLogin from '$lib/forceLogin';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { eq, sql } from 'drizzle-orm';
 
@@ -11,13 +12,12 @@ export const POST: RequestHandler = async ({ params, locals }) => {
     const code = params.code;
     if (!code) throw error(404, 'No code supplied');
 
-    const session = await locals.getSession();
-    if (!session?.user?.email) throw error(401, 'Session not found');
+    const { email } = await forceLogin(locals);
 
     const my_query = conn
         .select({ id: users.id, friends: users.friends })
         .from(users)
-        .where(eq(users.email, session.user?.email))
+        .where(eq(users.email, email))
         .limit(1);
 
     const other_query = conn
