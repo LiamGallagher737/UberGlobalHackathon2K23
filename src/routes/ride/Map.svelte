@@ -34,8 +34,6 @@
 
   let geometry: google.maps.GeometryLibrary;
 
-  let places: google.maps.PlacesLibrary;
-
   onMount(async () => {
     loader = new Loader({
       apiKey: PUBLIC_MAPS_API_KEY,
@@ -60,22 +58,23 @@
       });
     }
 
-    const mapOptions = {
+    const mapOptions: google.maps.MapOptions = {
       center: userPosition,
       zoom: 10,
+      streetViewControl: false,
+      mapTypeControl: false,
+      mapTypeControlOptions: {
+        mapTypeIds: [google.maps.MapTypeId.ROADMAP],
+      },
+      zoomControl: false,
+      fullscreenControl: false,
+      gestureHandling: 'greedy',
     };
 
     const mapDiv = document.getElementById('map') as HTMLInputElement;
 
     map = await loader.importLibrary('maps').then(({ Map }) => {
       return new Map(mapDiv, mapOptions);
-    });
-
-    map.setOptions({
-      streetViewControl: false,
-      mapTypeControlOptions: {
-        mapTypeIds: [google.maps.MapTypeId.ROADMAP],
-      },
     });
 
     google.maps.event.addListener(
@@ -156,4 +155,4 @@
   }
 </script>
 
-<div class="w-9/12 md:w-9/12 h-96 rounded-2xl shadow-lg mb-10" id="map" />
+<div class="w-full h-full" id="map" />
