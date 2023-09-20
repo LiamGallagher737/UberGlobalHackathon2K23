@@ -1,5 +1,9 @@
 # Ecoride
 
+Check out our deployed app on: https://ecoride.vercel.app/
+
+NOTE: Please use the dev tools on chrome to go on mobile mode. This app is intended to be used on mobile only.
+
 Compete with your friends for a greener tomorrow!
 
 -   Earn Points
