@@ -98,17 +98,3 @@
     <p>An error occured when trying to get options</p>
   {/await}
 {/if}
-
-{#if year && manufacturer && model && option}
-  {#await emissions.vehicle(option)}
-    Loading Vehicle Info
-  {:then data}
-    {#if data.emissionsList}
-      <span>{data.emissionsList.emissionsInfo[0].score}</span>
-    {:else}
-      <span>No Score</span>
-    {/if}
-  {:catch}
-    <p>An error occured when trying to get vehicle info</p>
-  {/await}
-{/if}
