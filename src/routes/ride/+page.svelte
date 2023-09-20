@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import type { RouteFinderData } from '../api/route/finder/+server';
-  import CarSelector from './CarSelector.svelte';
   import Map from './Map.svelte';
   import type { Loader } from '@googlemaps/js-api-loader';
   import plus from '$lib/assets/icons/plus.svg';
