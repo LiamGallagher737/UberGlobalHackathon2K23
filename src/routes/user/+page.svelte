@@ -34,20 +34,23 @@
     {data.points} <span class="text-sm">points</span>
   </p>
   <div class="mb-60">
-    {#await friendURIPromise }
-        <div></div>
+    {#await friendURIPromise}
+      <div />
     {:then friendURI}
-        <p class="bg-green-800 rounded-lg text-green-100 p-1" transition:fade={{delay: 0, duration:1000, easing:expoIn}}>
-            {friendURI}
-            <button
-                class="hover:underline text-xs text-bold"
-                on:click={() => {
-                    navigator.clipboard.writeText(friendURI);
-                }}
-            >
-                copy
-            </button>
-        </p>
+      <p
+        class="bg-green-800 rounded-lg text-green-100 p-1"
+        transition:fade={{ delay: 0, duration: 1000, easing: expoIn }}
+      >
+        {friendURI}
+        <button
+          class="hover:underline text-xs text-bold"
+          on:click={() => {
+            navigator.clipboard.writeText(friendURI);
+          }}
+        >
+          copy
+        </button>
+      </p>
     {/await}
   </div>
 </div>
