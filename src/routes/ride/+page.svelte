@@ -1,17 +1,17 @@
 <script lang="ts">
-  /* eslint-disable */
   import { onMount } from 'svelte';
   import type { RouteFinderData } from '../api/route/finder/+server';
-  import CarSelector from './CarSelector.svelte';
   import Map from './Map.svelte';
   import type { Loader } from '@googlemaps/js-api-loader';
+  import plus from '$lib/assets/icons/plus.svg';
+  import minus from '$lib/assets/icons/minus.svg';
+  import mapMarker from '$lib/assets/icons/mapMarker.svg';
+  import { fade } from 'svelte/transition';
+  import type { PageData } from './$types';
+
+  export let data: PageData;
 
   const FINDER_API_URL = '/api/route/finder';
-
-  const options = {
-    fields: ['formatted_address', 'geometry', 'name'],
-    strictBounds: false,
-  };
 
   let loader: Loader;
 
@@ -19,9 +19,11 @@
 
   let mapComponent: Map;
 
-  let vehicleId: string | null = null;
+  let vehicleId: string | null = data.cars?.[0].id;
 
+  // eslint-disable-next-line
   let startMarker: google.maps.Marker;
+  // eslint-disable-next-line
   let endMarker: google.maps.Marker;
 
   let startLocation: string;
@@ -34,41 +36,12 @@
 
   let state: SettingState = 'nothing';
 
+  // eslint-disable-next-line
   let map: google.maps.Map;
-
-  let loaded: boolean = false;
-
-  function handleLoad(e: CustomEvent<any>): void {
-    console.log('ASUDGJSGKDGJ');
-
-    //   const input_start = document.getElementById("place-start") as HTMLInputElement;
-    //   const input_end = document.getElementById("place-end") as HTMLInputElement;
-
-    //   const autocomplete_start = new google.maps.places.Autocomplete(input_start, options);
-    //   const autocomplete_end   = new google.maps.places.Autocomplete(input_end, options);
-
-    //   autocomplete_start.bindTo("bounds", map);
-    //   autocomplete_end.bindTo("bounds", map);
-
-    //   autocomplete_end.addListener('place_changed', () => {
-    //     const place = autocomplete_end.getPlace();
-
-    //     if (place?.geometry === undefined) {
-    //       throw new Error("get fucked");
-    //     }
-
-    //     if (place.geometry.viewport) {
-    //     map.fitBounds(place.geometry.viewport);
-    //   } else if (place.geometry.location) {
-    //     map.setCenter(place.geometry.location);
-    //     map.setZoom(17);
-    //   }
-    //   });
-  }
 
   onMount(() => {});
 
-  async function calculatePoints() {
+  async function startRoute() {
     if (!startSet || !endSet) {
       alert('Start or end location missing');
     } else if (vehicleId === null) {
@@ -106,11 +79,17 @@
       mapComponent.updateMapRoute(encodedPath);
     }
   }
+
+  function zoom(amount: number) {
+    const currentZoom = map.getZoom() ?? 10;
+    let newZoom = currentZoom + amount;
+    newZoom = Math.min(Math.max(newZoom, 1), 20);
+    map.setZoom(newZoom);
+  }
 </script>
 
-<section class="pt-24 flex flex-col items-center justify-center w-screen bg-white">
+<div class="w-screen h-screen fixed">
   <Map
-    on:loaded={handleLoad}
     bind:this={mapComponent}
     bind:loader
     bind:startMarker
@@ -122,45 +101,95 @@
     bind:endLocation
     bind:map
   />
+</div>
 
-  <form class="w-9/12 md:w-9/12" action="">
+<div class="fixed z-10 flex flex-col gap-2 right-2 bottom-32">
+  <button class="p-2 bg-white shadow-xl rounded-full" on:click={() => zoom(1)}>
+    <img class="icon" width="32" height="32" src={plus} alt="Zoom in" />
+  </button>
+
+  <button class="p-2 bg-white shadow-xl rounded-full" on:click={() => zoom(-1)}>
+    <img class="icon" width="32" height="32" src={minus} alt="Zoom out" />
+  </button>
+</div>
+
+<form class="fixed z-10 flex flex-col w-full px-6 gap-2 top-4" action="">
+  <div class="flex flex-row gap-3">
     <input
       type="text"
-      placeholder="Click here, then select start point on map"
-      on:click={() => {
-        state = 'start';
-      }}
+      placeholder="Start Location"
       bind:value={startLocation}
       name="start"
       id="place-start"
-      class="text-sm bg-transparent p-5 w-full h-10 rounded-2xl shadow-xl mb-7"
+      class="text-md bg-white p-5 w-full h-12 rounded-full shadow-xl"
     />
+    <button
+      class="p-3 rounded-full shadow-xl transition {state === 'start'
+        ? 'bg-red-200'
+        : 'bg-red-400'}"
+      on:click={() => {
+        state = 'start';
+      }}
+    >
+      <img class="invert" width="32" height="32" src={mapMarker} alt="Set start" />
+    </button>
+  </div>
+
+  <div class="flex flex-row gap-3">
     <input
       type="text"
-      placeholder="Click here, then select end point on map"
-      on:click={() => {
-        state = 'end';
-      }}
+      placeholder="Destination"
       bind:value={endLocation}
       name="end"
       id="place-end"
-      class="text-sm bg-transparent p-5 w-full h-10 rounded-2xl shadow-xl mb-7"
+      class="text-md bg-white p-5 w-full h-12 rounded-full shadow-xl"
     />
-    <div class="flex">
-      <button
-        on:click={calculatePoints}
-        class="transition duration-200 w-40 h-10 rounded-xl bg-blue-500 shadow-md mr-5"
-        >Calculate Points</button
-      >
-      <div class="flex items-center justify-center bg-gray-500 w-40 h-10 rounded-xl">
-        <p class=" text-xl text-center">{points} points</p>
-      </div>
-    </div>
-  </form>
+    <button
+      class="p-3 rounded-full shadow-xl transition {state === 'end' ? 'bg-red-200' : 'bg-red-400'}"
+      on:click={() => {
+        state = 'end';
+      }}
+    >
+      <img class="invert" width="32" height="32" src={mapMarker} alt="Set end" />
+    </button>
+  </div>
 
-  <form action="">
-    <div class="mt-5 flex flex-col gap-4">
-      <CarSelector bind:option={vehicleId} />
-    </div>
-  </form>
-</section>
+  <div class="flex flex-row gap-3">
+    <select
+      name="car"
+      id="car"
+      class="text-md bg-white px-5 w-full h-12 rounded-full shadow-xl"
+      bind:value={vehicleId}
+    >
+      {#each data.cars as { name, id }}
+        <option value={id}>{name}</option>
+      {/each}
+      {#if data.cars.length === 0}
+        <option value={null} disabled selected>You have no cars! Add one</option>
+      {/if}
+    </select>
+    <a href="/user" class="p-3 rounded-full shadow-xl bg-red-400">
+      <img class="invert" width="32" height="32" src={plus} alt="Set end" />
+    </a>
+  </div>
+
+  {#if startLocation && endLocation}
+    <button
+      in:fade={{ duration: 150 }}
+      on:click={startRoute}
+      class="bg-gradient-to-br from-[#F3ED47] to-[#2ADC7D] px-4 py-2 rounded-full text-white text-3xl font-bold w-40 mx-auto shadow-xl"
+    >
+      Go
+    </button>
+  {/if}
+
+  {#if points > 0}
+    <p class="text-white text-lg font-semibold w-full text-center">Points: {points}</p>
+  {/if}
+</form>
+
+<style>
+  .icon {
+    filter: invert(32%) sepia(0%) saturate(11%) hue-rotate(179deg) brightness(98%) contrast(83%);
+  }
+</style>
