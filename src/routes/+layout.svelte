@@ -15,7 +15,7 @@
   :global(body) {
     background-color: white;
   }
-  
+
   main {
     background-color: white;
     overflow-x: hidden;
