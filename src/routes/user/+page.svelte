@@ -22,14 +22,11 @@
     });
   });
 
-  async function setPrivate(isPrivate: boolean){
-    const req = await fetch(
-        "/api/user/private",
-        {
-            method: "put",
-            body: JSON.stringify({private: isPrivate})
-        }
-    )
+  async function setPrivate(isPrivate: boolean) {
+    const req = await fetch('/api/user/private', {
+      method: 'put',
+      body: JSON.stringify({ private: isPrivate }),
+    });
 
     invalidateAll();
     return req.ok;
@@ -58,6 +55,12 @@
         </button>
       </p>
     {/await}
-    <button on:click={() => {setPrivate(!data.private)}} class="bg-green-800 rounded-lg text-green-100 p-1 mt-2">Make {data.private ? "public" : "private"}</button>
+    <button
+      on:click={() => {
+        setPrivate(!data.private);
+      }}
+      class="bg-green-800 rounded-lg text-green-100 p-1 mt-2"
+      >Make {data.private ? 'public' : 'private'}</button
+    >
   </div>
 </div>
