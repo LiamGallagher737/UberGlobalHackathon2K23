@@ -8,7 +8,9 @@
 </div>
 
 <div class="bg-black opacity-70 h-screen w-screen z-[100] fixed hidden sm:block">
-  <h1 class="text-white text-4xl font-medium px-12">Please enter mobile view or decrease your window width</h1>
+  <h1 class="text-white text-4xl font-medium px-12">
+    Please enter mobile view or decrease your window width
+  </h1>
 </div>
 
 <main class="">
