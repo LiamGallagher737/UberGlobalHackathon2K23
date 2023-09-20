@@ -113,7 +113,7 @@
   </button>
 </div>
 
-<form class="fixed z-10 flex flex-col w-full px-6 gap-3 top-4" action="">
+<form class="fixed z-10 flex flex-col w-full px-6 gap-2 top-4" action="">
   <div class="flex flex-row gap-3">
     <input
       type="text"
@@ -181,6 +181,10 @@
     >
       Go
     </button>
+  {/if}
+
+  {#if points > 0}
+  <p class="text-white text-lg font-semibold w-full text-center">Points: {points}</p>
   {/if}
 </form>
 

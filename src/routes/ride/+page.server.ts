@@ -13,5 +13,5 @@ export const load: PageServerLoad = async ({ locals }) => {
 
     return {
         cars: res[0].cars ?? [],
-    }
+    };
 };
