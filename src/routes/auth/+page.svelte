@@ -7,7 +7,9 @@
 </script>
 
 <section class="flex items-center justify-around h-screen bg-white">
-  <div class="drop-shadow-xl w-5/6 h-1/2 gradient-border flex flex-col justify-between items-center rounded-3xl">
+  <div
+    class="drop-shadow-xl w-[90%] h-1/2 gradient-border flex flex-col justify-between items-center rounded-3xl"
+  >
     <div class="md:w-1/3 md:h-1/2 text-center">
       {#if $page.data.session}
         <p class="signedInText mb-6 m-10">
@@ -34,7 +36,7 @@
 
   .gradient-border {
     background: linear-gradient(#fff, #fff) padding-box,
-    linear-gradient(135deg, #f3ed47, #2adc7d) border-box;
+      linear-gradient(135deg, #f3ed47, #2adc7d) border-box;
     border: 5px solid transparent;
   }
 </style>

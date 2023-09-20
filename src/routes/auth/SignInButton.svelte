@@ -10,7 +10,9 @@
   }
 </script>
 
-<button on:click={onClick} class="button bg-grad rounded-2xl w-1/2 h-24 mb-10 text-white font-bold text-2xl"
+<button
+  on:click={onClick}
+  class="button bg-grad rounded-2xl w-1/2 h-20 mb-10 text-white font-bold text-2xl"
   >{signedIn ? 'Sign Out' : 'Sign In'}</button
 >
 
