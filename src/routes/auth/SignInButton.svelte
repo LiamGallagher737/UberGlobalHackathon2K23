@@ -12,6 +12,12 @@
 
 <button
   on:click={onClick}
-  class="button shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] bg-green-500 rounded-b-2xl w-full h-12"
+  class="button bg-grad rounded-2xl w-1/2 h-20 mb-10 text-white font-bold text-2xl"
   >{signedIn ? 'Sign Out' : 'Sign In'}</button
 >
+
+<style>
+  .bg-grad {
+    background-image: linear-gradient(to bottom right, #f3ed47, #2adc7d);
+  }
+</style>
