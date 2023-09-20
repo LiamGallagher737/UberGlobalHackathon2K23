@@ -4,7 +4,6 @@ import forceLogin from '$lib/forceLogin';
 
 export const load: PageServerLoad = async ({ locals, fetch }) => {
     const session = await forceLogin(locals);
-    const image = session.session.user?.image;
 
     const query = await fetch('/api/user');
     if (!query.ok) throw error(404, "We couldn't find you");
@@ -17,7 +16,8 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
         code: string;
         friends: number[] | null;
         private: boolean;
+        pfp: string;
     } = await query.json();
 
-    return { ...data, image };
+    return data;
 };

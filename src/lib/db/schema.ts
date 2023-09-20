@@ -8,6 +8,7 @@ export const users = pgTable('user', {
     code: char('code', { length: 8 }).notNull().unique(),
     friends: integer('friends').array(),
     private: boolean('private').notNull().default(false),
+    pfp: text('pfp').notNull().default('https://upload.wikimedia.org/wikipedia/commons/1/14/9-94702_user-outline-icon-clipart-png-download-profile-icon.png'),
 });
 
 export const journeys = pgTable('journeys', {

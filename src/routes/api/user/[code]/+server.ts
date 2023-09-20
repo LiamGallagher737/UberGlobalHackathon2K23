@@ -15,6 +15,7 @@ export const GET: RequestHandler = async ({ params, locals }) => {
             name: users.name,
             friends: users.friends,
             email: users.email,
+            pfp: users.pfp,
         })
         .from(users)
         .where(eq(users.code, code))
@@ -48,5 +49,6 @@ export const GET: RequestHandler = async ({ params, locals }) => {
         code: code,
         isFriend: !isMe && isFriend,
         isMe: isMe,
+        pfp: otherUser.pfp,
     });
 };
