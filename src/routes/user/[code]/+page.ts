@@ -8,6 +8,7 @@ type User = {
     code: string;
     isFriend: boolean;
     isMe: boolean;
+    pfp: string;
 };
 
 export const load = (async ({ params, fetch }) => {
