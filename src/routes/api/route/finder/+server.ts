@@ -12,7 +12,6 @@ import { journeys, users } from '$lib/db/schema';
 import type { Session } from '@auth/core/types';
 import { eq } from 'drizzle-orm';
 import forceLogin from '$lib/forceLogin';
-import { getSession } from '@auth/sveltekit';
 
 type RouteFinderData = {
     start: LatLng | undefined;
