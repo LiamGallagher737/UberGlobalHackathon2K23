@@ -7,6 +7,9 @@
   import minus from '$lib/assets/icons/minus.svg';
   import mapMarker from '$lib/assets/icons/mapMarker.svg';
   import { fade } from 'svelte/transition';
+  import type { PageData } from './$types';
+
+  export let data: PageData;
 
   const FINDER_API_URL = '/api/route/finder';
 
@@ -16,7 +19,7 @@
 
   let mapComponent: Map;
 
-  let vehicleId: string | null = null;
+  let vehicleId: string | null = data.cars?.[0].id;
 
   // eslint-disable-next-line
   let startMarker: google.maps.Marker;
@@ -149,6 +152,25 @@
     >
       <img class="invert" width="32" height="32" src={mapMarker} alt="Set end" />
     </button>
+  </div>
+
+  <div class="flex flex-row gap-3">
+    <select
+      name="car"
+      id="car"
+      class="text-md bg-white px-5 w-full h-12 rounded-full shadow-xl"
+      bind:value={vehicleId}
+    >
+      {#each data.cars as { name, id }}
+        <option value={id}>{name}</option>
+      {/each}
+      {#if data.cars.length === 0}
+        <option value={null} disabled selected>You have no cars! Add one</option>
+      {/if}
+    </select>
+    <a href="/user" class="p-3 rounded-full shadow-xl bg-red-400">
+      <img class="invert" width="32" height="32" src={plus} alt="Set end" />
+    </a>
   </div>
 
   {#if startLocation && endLocation}
