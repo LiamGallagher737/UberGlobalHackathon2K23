@@ -10,6 +10,7 @@
 
   import { inview } from 'svelte-inview';
   import type { Options } from 'svelte-inview';
+  import Footer from '$lib/components/Footer.svelte';
 
   // in view bool for each blob
   let viewBools = [false, false, false, false, false, false, false];
@@ -290,6 +291,8 @@
     </div>
   </section>
 </div>
+
+<Footer />
 
 <style>
   :global(body) {
