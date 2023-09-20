@@ -1,4 +1,4 @@
-import { char, integer, pgTable, text, serial, boolean } from 'drizzle-orm/pg-core';
+import { char, integer, pgTable, text, serial, boolean, jsonb } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('user', {
     id: serial('id').notNull().primaryKey().unique(),
@@ -13,6 +13,7 @@ export const users = pgTable('user', {
         .default(
             'https://upload.wikimedia.org/wikipedia/commons/1/14/9-94702_user-outline-icon-clipart-png-download-profile-icon.png'
         ),
+    cars: jsonb('cars').$type<{name: string, id: string}>(),
 });
 
 export const journeys = pgTable('journeys', {
