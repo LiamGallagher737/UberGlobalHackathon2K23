@@ -4,6 +4,8 @@
   export let points = 0;
   export let pfp =
     'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/136b7248-5a5e-4770-b023-742816304ba7/dece3ik-4e484636-1ef0-4ce5-82da-4182ae2509db.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzEzNmI3MjQ4LTVhNWUtNDc3MC1iMDIzLTc0MjgxNjMwNGJhN1wvZGVjZTNpay00ZTQ4NDYzNi0xZWYwLTRjZTUtODJkYS00MTgyYWUyNTA5ZGIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.cxMAcRlAHynNxMSkHgew_mMGft6BzH2up_mgcQLI1R4';
+
+  
 </script>
 
 <div
