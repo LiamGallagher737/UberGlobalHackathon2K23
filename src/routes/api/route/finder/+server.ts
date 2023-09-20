@@ -11,6 +11,8 @@ import { conn } from '$lib/db/conn.server';
 import { journeys, users } from '$lib/db/schema';
 import type { Session } from '@auth/core/types';
 import { eq } from 'drizzle-orm';
+import forceLogin from '$lib/forceLogin';
+import { getSession } from '@auth/sveltekit';
 
 type RouteFinderData = {
     start: LatLng | undefined;
@@ -28,14 +30,12 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     console.log(data);
 
-    const session = await locals.getSession();
-
-    if (!session?.user?.email) throw error(401, 'No session provided');
+    const email = await forceLogin(locals)
 
     const userQuery = conn
         .select({ id: users.id })
         .from(users)
-        .where(eq(users.email, session.user?.email))
+        .where(eq(users.email, email))
         .limit(1);
 
     if (!data?.start || !data?.destination)

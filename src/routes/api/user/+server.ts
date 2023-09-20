@@ -1,5 +1,6 @@
 import { conn } from '$lib/db/conn.server';
 import { users } from '$lib/db/schema';
+import forceLogin from '$lib/forceLogin';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
@@ -8,13 +9,9 @@ import { eq } from 'drizzle-orm';
  * @returns User data
  */
 export const GET: RequestHandler = async ({ locals }) => {
-    const session = await locals.getSession();
+    const email = await forceLogin(locals);
 
-    if (session === null) throw error(401, 'Session not found');
-
-    if (!session.user?.email) throw error(500, 'Session email not found');
-
-    const results = await conn.select().from(users).where(eq(users.email, session.user.email));
+    const results = await conn.select().from(users).where(eq(users.email, email));
 
     if (results.length === 0) throw error(404, 'User not found');
 
