@@ -1,215 +1,166 @@
 <script lang="ts">
   /* eslint-disable */
-  import { PUBLIC_MAPS_API_KEY } from '$env/static/public';
-  import { Loader } from '@googlemaps/js-api-loader';
   import { onMount } from 'svelte';
+  import type { RouteFinderData } from '../api/route/finder/+server';
+  import CarSelector from './CarSelector.svelte';
+  import Map from './Map.svelte';
+  import type { Loader } from '@googlemaps/js-api-loader';
 
   const FINDER_API_URL = '/api/route/finder';
 
-  const loader = new Loader({
-    apiKey: PUBLIC_MAPS_API_KEY,
-    version: 'weekly',
-    libraries: ['maps', 'geometry'],
-  });
+  const options = {
+    fields: ['formatted_address', 'geometry', 'name'],
+    strictBounds: false,
+  };
 
-  const LINE_COLOUR: string = '#0b008a';
-  const LINE_WEIGHT: number = 4;
-  const LINE_OPACITY: number = 1.0;
+  let loader: Loader;
+
+  let points: number = 0;
+
+  let mapComponent: Map;
+
+  let vehicleId: string | null = null;
 
   let startMarker: google.maps.Marker;
   let endMarker: google.maps.Marker;
 
+  let startLocation: string;
+  let endLocation: string;
+
   let startSet: boolean = false;
   let endSet: boolean = false;
 
-  let userPosition = { lat: 0, lng: 0 };
+  type SettingState = 'start' | 'end' | 'nothing';
+
+  let state: SettingState = 'nothing';
 
   let map: google.maps.Map;
 
-  let geometry: google.maps.GeometryLibrary;
+  let loaded: boolean = false;
 
-  onMount(async () => {
-    geometry = await loader.importLibrary('geometry');
+  function handleLoad(e: CustomEvent<any>): void {
+    console.log('ASUDGJSGKDGJ');
 
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
+    //   const input_start = document.getElementById("place-start") as HTMLInputElement;
+    //   const input_end = document.getElementById("place-end") as HTMLInputElement;
 
-        map.setCenter(pos);
-      });
-    }
+    //   const autocomplete_start = new google.maps.places.Autocomplete(input_start, options);
+    //   const autocomplete_end   = new google.maps.places.Autocomplete(input_end, options);
 
-    const mapOptions = {
-      center: userPosition,
-      zoom: 4,
-    };
+    //   autocomplete_start.bindTo("bounds", map);
+    //   autocomplete_end.bindTo("bounds", map);
 
-    const mapDiv = document.getElementById('map') as HTMLInputElement;
+    //   autocomplete_end.addListener('place_changed', () => {
+    //     const place = autocomplete_end.getPlace();
 
-    map = await loader.importLibrary('maps').then(({ Map }) => {
-      return new Map(mapDiv, mapOptions);
-    });
+    //     if (place?.geometry === undefined) {
+    //       throw new Error("get fucked");
+    //     }
 
-    google.maps.event.addListener(
-      map,
-      'click',
-      async (event: { latLng: google.maps.LatLngLiteral }) => {
-        if (!startSet) {
-          updateStartMarker(event.latLng, map);
-        } else if (!endSet) {
-          updateEndMarker(event.latLng, map);
-        }
-
-        if (startSet && endSet) {
-          if (!startMarker.getPosition || !endMarker.getPosition)
-            throw new Error('Unable to find markers');
-
-          const body = {
-            start: startMarker.getPosition(),
-            destination: endMarker.getPosition(),
-          };
-
-          console.log(body);
-
-          const req = await fetch(FINDER_API_URL, {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-          });
-
-          if (!req.ok) throw new Error('Unable to fetch route data');
-
-          const encodedPath: string = (await req.json()).path;
-
-          if (!encodedPath) throw new Error('Unable to parse route data response');
-
-          updateMapRoute(encodedPath, map);
-        }
-      }
-    );
-  });
-
-  let line: google.maps.Polyline | undefined;
-
-  function updateMapRoute(encodedPath: string, map: google.maps.Map) {
-    const decodedPath = geometry.encoding.decodePath(encodedPath);
-
-    if (line === undefined) {
-      line = new google.maps.Polyline({
-        path: decodedPath,
-        geodesic: true,
-        strokeColor: LINE_COLOUR,
-        strokeOpacity: LINE_OPACITY,
-        strokeWeight: LINE_WEIGHT,
-      }) as google.maps.Polyline;
-    } else {
-      line.setPath(decodedPath);
-    }
-
-    line.setMap(map);
+    //     if (place.geometry.viewport) {
+    //     map.fitBounds(place.geometry.viewport);
+    //   } else if (place.geometry.location) {
+    //     map.setCenter(place.geometry.location);
+    //     map.setZoom(17);
+    //   }
+    //   });
   }
 
-  function updateStartMarker(location: google.maps.LatLngLiteral, map: google.maps.Map) {
-    // Add the marker at the clicked location, and add the next-available label
-    // from the array of alphabetical characters.
+  onMount(() => {});
 
-    if (startMarker === undefined) {
-      console.log('Set the marker');
-
-      startMarker = new google.maps.Marker({
-        position: location,
-        label: 'S',
-        map: map,
-      });
-    } else {
-      startMarker.setPosition(location);
+  async function calculatePoints() {
+    if (!startSet || !endSet) {
+      alert('Start or end location missing');
+    } else if (vehicleId === null) {
+      alert('Please select a car');
     }
-  }
 
-  function updateEndMarker(location: google.maps.LatLngLiteral, map: google.maps.Map) {
-    // Add the marker at the clicked location, and add the next-available label
-    // from the array of alphabetical characters.
+    if (startSet && endSet) {
+      const startPosition = startMarker.getPosition()?.toJSON();
+      const endPosition = endMarker.getPosition()?.toJSON();
 
-    if (endMarker === undefined) {
-      console.log('Set the marker');
+      if (!startPosition || !endPosition) throw new Error('Unable to find markers');
 
-      endMarker = new google.maps.Marker({
-        position: location,
-        label: 'E',
-        map: map,
+      const body: RouteFinderData = {
+        start: startPosition,
+        destination: endPosition,
+        carEmissionsId: vehicleId ?? 'walking',
+      };
+
+      const req = await fetch(FINDER_API_URL, {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
       });
-    } else {
-      endMarker.setPosition(location);
+
+      if (!req.ok) throw new Error('Unable to fetch route data');
+
+      const data = await req.json();
+
+      const encodedPath: string = data.path;
+
+      if (!encodedPath) throw new Error('Unable to parse route data response');
+
+      points = data.points;
+
+      mapComponent.updateMapRoute(encodedPath);
     }
   }
 </script>
 
-<section class="flex flex-col items-center justify-evenly w-screen h-screen bg-white">
-  <div class="w-1/2 h-1/2 rounded-2xl shadow-lg" id="map" />
+<section class="pt-24 flex flex-col items-center justify-center w-screen bg-white">
+  <Map
+    on:loaded={handleLoad}
+    bind:this={mapComponent}
+    bind:loader
+    bind:startMarker
+    bind:endMarker
+    bind:state
+    bind:startSet
+    bind:endSet
+    bind:startLocation
+    bind:endLocation
+    bind:map
+  />
+
+  <form class="w-9/12 md:w-9/12" action="">
+    <input
+      type="text"
+      placeholder="Click here, then select start point on map"
+      on:click={() => {
+        state = 'start';
+      }}
+      bind:value={startLocation}
+      name="start"
+      id="place-start"
+      class="text-sm bg-transparent p-5 w-full h-10 rounded-2xl shadow-xl mb-7"
+    />
+    <input
+      type="text"
+      placeholder="Click here, then select end point on map"
+      on:click={() => {
+        state = 'end';
+      }}
+      bind:value={endLocation}
+      name="end"
+      id="place-end"
+      class="text-sm bg-transparent p-5 w-full h-10 rounded-2xl shadow-xl mb-7"
+    />
+    <div class="flex">
+      <button
+        on:click={calculatePoints}
+        class="transition duration-200 w-40 h-10 rounded-xl bg-blue-500 shadow-md mr-5"
+        >Calculate Points</button
+      >
+      <div class="flex items-center justify-center bg-gray-500 w-40 h-10 rounded-xl">
+        <p class=" text-xl text-center">{points} points</p>
+      </div>
+    </div>
+  </form>
 
   <form action="">
-    <button
-      on:click={() => {
-        startSet = !startSet;
-      }}
-      class:bg-green-200={startSet}
-      class="transition duration-200 w-32 h-10 bg-green-500 rounded-xl shadow-md m-5"
-      >Set Start</button
-    >
-    <button
-      on:click={() => {
-        endSet = !endSet;
-      }}
-      class:bg-red-200={endSet}
-      class="transition duration-200 w-32 h-10 bg-red-500 rounded-xl shadow-md m-5">Set End</button
-    >
+    <div class="mt-5 flex flex-col gap-4">
+      <CarSelector bind:option={vehicleId} />
+    </div>
   </form>
 </section>
-
-<svelte:head>
-  <script>
-    ((g) => {
-      var h,
-        a,
-        k,
-        p = 'The Google Maps JavaScript API',
-        c = 'google',
-        l = 'importLibrary',
-        q = '__ib__',
-        m = document,
-        b = window;
-      b = b[c] || (b[c] = {});
-      var d = b.maps || (b.maps = {}),
-        r = new Set(),
-        e = new URLSearchParams(),
-        u = () =>
-          h ||
-          (h = new Promise(async (f, n) => {
-            await (a = m.createElement('script'));
-            e.set('libraries', [...r] + '');
-            for (k in g)
-              e.set(
-                k.replace(/[A-Z]/g, (t) => '_' + t[0].toLowerCase()),
-                g[k]
-              );
-            e.set('callback', c + '.maps.' + q);
-            a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
-            d[q] = f;
-            a.onerror = () => (h = n(Error(p + ' could not load.')));
-            a.nonce = m.querySelector('script[nonce]')?.nonce || '';
-            m.head.append(a);
-          }));
-      d[l]
-        ? console.warn(p + ' only loads once. Ignoring:', g)
-        : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
-    })({
-      key: { PUBLIC_MAP_API_KEY },
-      v: 'weekly',
-      // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
-      // Add other bootstrap parameters as needed, using camel case.
-    });
-  </script>
-</svelte:head>
