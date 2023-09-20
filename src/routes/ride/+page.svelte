@@ -184,7 +184,7 @@
   {/if}
 
   {#if points > 0}
-  <p class="text-white text-lg font-semibold w-full text-center">Points: {points}</p>
+    <p class="text-white text-lg font-semibold w-full text-center">Points: {points}</p>
   {/if}
 </form>
 
