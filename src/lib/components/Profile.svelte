@@ -7,19 +7,42 @@
 </script>
 
 <div
-  class="bg-green-500 flex flex-col items-center justify-start filter drop-shadow-md p-2 rounded-md max-h-50 m-10"
+  class="gradient-border flex flex-col items-center justify-start filter drop-shadow-md p-2 rounded-2xl px-10"
 >
-  <img src={pfp} class="w-20 h-20 object-cover rounded-full" alt="{name} looking their best." />
+  <img src={pfp} class="w-24 h-24 object-cover rounded-full mb-5" alt="{name} looking their best." />
+
+  <p class="gradient-text text-4xl filter drop-shadow-xl mb-5">{name}</p>
 
   <p
-    class="text-green-500 font-bold text-md drop-shadow-xl {!isPrivate
-      ? 'bg-blue-200'
-      : 'bg-orange-200'} rounded-lg p-1"
+    class="text-white font-bold text-md drop-shadow-xl mb-5 p-2 {!isPrivate
+      ? 'bg-grad'
+      : 't bg-gray-500'} rounded-lg p-1"
   >
     {isPrivate ? 'Private' : 'Public'}
   </p>
-  <p class="mb-4 text-green-200 text-2xl filter drop-shadow-xl">{name}</p>
-  <p class="mb-20 text-green-800 text-lg filter drop-shadow-xl">
-    {points} <span class="text-sm">ep</span>
+
+  <p class="mb-5 text-black text-lg filter drop-shadow-xl">
+    {points} <span>ep</span>
   </p>
 </div>
+
+<style>
+  .gradient-border {
+    background: linear-gradient(#fff, #fff) padding-box,
+      linear-gradient(135deg, #f3ed47, #2adc7d) border-box;
+    border: 5px solid transparent;
+  }
+
+  .bg-grad {
+    background-image: linear-gradient(to bottom right, #f3ed47, #2adc7d);
+  }
+
+  .gradient-text {
+    background-image: linear-gradient(45deg, #f3ed47, #2adc7d);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+  }
+</style>

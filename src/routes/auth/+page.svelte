@@ -12,9 +12,9 @@
   >
     <div class="md:w-1/3 md:h-1/2 text-center">
       {#if $page.data.session}
-        <p class="signedInText mb-6 m-10">
-          <small>Signed in as</small><br />
-          <strong>{$page.data.session.user?.name ?? 'User'}</strong>
+        <p class="signedInText mb-6 m-10 text-3xl">
+          <small class="text-black">Signed in as</small><br />
+          <strong class="gradient-text">{$page.data.session.user?.name ?? 'User'}</strong>
         </p>
       {:else}
         <p class="notSignedInText gradient-text font-bold text-3xl mt-10">You are not signed in</p>
