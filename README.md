@@ -10,8 +10,6 @@ Compete with your friends for a greener tomorrow!
 
 Ecoride is the fun and innotave way to push yourself to save the planet. Go on eco-friendly trips to earn EcoPoints. Then comete with your friends and with the world to see who can be the greenest.
 
-## The .env file
-
 Happy Earning
 
 _The Ecoride devs_
