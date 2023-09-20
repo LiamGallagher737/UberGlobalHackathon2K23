@@ -42,19 +42,13 @@
     {:then friendURI}
       <button
         class="bg-green-800 hover:underline rounded-lg text-green-100 p-1"
-          on:click={() => {
-            navigator.clipboard.writeText(friendURI);
-          }}
-
+        on:click={() => {
+          navigator.clipboard.writeText(friendURI);
+        }}
         transition:fade={{ delay: 0, duration: 1000, easing: expoIn }}
       >
         {friendURI}
-        <span
-          class="text-xs text-bold"
-          
-        >
-          copy
-        </span>
+        <span class="text-xs text-bold"> copy </span>
       </button>
     {/await}
     <button
