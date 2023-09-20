@@ -2,7 +2,7 @@
   /* eslint-disable */
   import { onMount } from 'svelte';
   import type { RouteFinderData } from '../api/route/finder/+server';
-  import CarSelector from './CarSelector.svelte';
+  import CarSelector from '../user/CarSelector.svelte';
   import Map from './Map.svelte';
   import type { Loader } from '@googlemaps/js-api-loader';
 

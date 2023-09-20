@@ -3,7 +3,7 @@
   import '../app.css';
 </script>
 
-<div class="w-full px-4 fixed z-50 bottom-6 max-w-md left-1/2 -translate-x-1/2">
+<div class="w-full px-4 fixed z-30 bottom-6 max-w-md left-1/2 -translate-x-1/2">
   <Nav />
 </div>
 
