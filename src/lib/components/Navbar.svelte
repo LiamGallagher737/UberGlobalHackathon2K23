@@ -27,6 +27,7 @@
         <li><a on:click={toggleNav} href="/">HOME</a></li>
         <li><a on:click={toggleNav} href="/ride">RIDE</a></li>
         <li><a on:click={toggleNav} href="/leaderboard">LEADERBOARD</a></li>
+        <li><a on:click={toggleNav} href="/user">PROFILE</a></li>
         <li><a on:click={toggleNav} href="/raffles">RAFFLES</a></li>
         <li><a on:click={toggleNav} href="/about">ABOUT</a></li>
         <li><a on:click={toggleNav} href="/contact">CONTACT</a></li>
