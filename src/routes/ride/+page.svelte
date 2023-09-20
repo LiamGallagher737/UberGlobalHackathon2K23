@@ -4,8 +4,16 @@
   import type { RouteFinderData } from '../api/route/finder/+server';
   import CarSelector from './CarSelector.svelte';
   import Map from './Map.svelte';
+  import type { Loader } from '@googlemaps/js-api-loader';
 
   const FINDER_API_URL = '/api/route/finder';
+
+  const options = {
+    fields: ["formatted_address", "geometry", "name"],
+    strictBounds: false,
+  };
+
+  let loader: Loader;
 
   let points: number = 0;
 
@@ -26,7 +34,49 @@
 
   let state: SettingState = 'nothing';
 
+  let map: google.maps.Map;
+
+  let loaded: boolean = false;
+  
+  function handleLoad(e: CustomEvent<any>): void {
+    console.log("ASUDGJSGKDGJ");
+
+  //   const input_start = document.getElementById("place-start") as HTMLInputElement;
+  //   const input_end = document.getElementById("place-end") as HTMLInputElement;
+
+  //   const autocomplete_start = new google.maps.places.Autocomplete(input_start, options);
+  //   const autocomplete_end   = new google.maps.places.Autocomplete(input_end, options);
+
+  //   autocomplete_start.bindTo("bounds", map);
+  //   autocomplete_end.bindTo("bounds", map);
+
+  //   autocomplete_end.addListener('place_changed', () => {
+  //     const place = autocomplete_end.getPlace();
+
+  //     if (place?.geometry === undefined) {
+  //       throw new Error("get fucked");  
+  //     }
+
+  //     if (place.geometry.viewport) {
+  //     map.fitBounds(place.geometry.viewport);
+  //   } else if (place.geometry.location) {
+  //     map.setCenter(place.geometry.location);
+  //     map.setZoom(17);
+  //   }
+  //   });
+  }
+
+  onMount(() => {
+    
+  });
+
   async function calculatePoints() {
+    if (!startSet || !endSet) {
+      alert("Start or end location missing");
+    } else if (vehicleId === null) {
+      alert("Please select a car");
+    }
+    
     if (startSet && endSet) {
       const startPosition = startMarker.getPosition()?.toJSON();
       const endPosition = endMarker.getPosition()?.toJSON();
@@ -62,7 +112,9 @@
 
 <section class="pt-24 flex flex-col items-center justify-center w-screen bg-white">
   <Map
+    on:loaded={handleLoad}
     bind:this={mapComponent}
+    bind:loader={loader}
     bind:startMarker
     bind:endMarker
     bind:state
@@ -70,30 +122,31 @@
     bind:endSet
     bind:startLocation
     bind:endLocation
+    bind:map
   />
 
   <form class="w-9/12 md:w-9/12" action="">
     <input
       type="text"
-      placeholder="Enter start point, or select on map"
+      placeholder="Click here, then select start point on map"
       on:click={() => {
         state = 'start';
       }}
       bind:value={startLocation}
       name="start"
-      id="2"
-      class="bg-transparent p-5 w-full h-10 rounded-2xl shadow-xl mb-7"
+      id="place-start"
+      class="text-sm bg-transparent p-5 w-full h-10 rounded-2xl shadow-xl mb-7"
     />
     <input
       type="text"
-      placeholder="Enter end point, or select on map"
+      placeholder="Click here, then select end point on map"
       on:click={() => {
         state = 'end';
       }}
       bind:value={endLocation}
       name="end"
-      id="1"
-      class="bg-transparent p-5 w-full h-10 rounded-2xl shadow-xl mb-7"
+      id="place-end"
+      class="text-sm bg-transparent p-5 w-full h-10 rounded-2xl shadow-xl mb-7"
     />
     <div class="flex">
       <button

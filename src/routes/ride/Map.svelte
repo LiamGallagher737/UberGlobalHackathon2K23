@@ -2,16 +2,12 @@
   /* eslint-disable */
   import { PUBLIC_MAPS_API_KEY } from '$env/static/public';
   import { Loader } from '@googlemaps/js-api-loader';
-  import { onMount } from 'svelte';
+  import { createEventDispatcher, onMount, type EventDispatcher } from 'svelte';
   import type { RouteFinderData } from '../api/route/finder/+server';
 
-  const FINDER_API_URL = '/api/route/finder';
+  const dispatcher = createEventDispatcher();
 
-  const loader = new Loader({
-    apiKey: PUBLIC_MAPS_API_KEY,
-    version: 'weekly',
-    libraries: ['maps', 'geometry'],
-  });
+  const FINDER_API_URL = '/api/route/finder';
 
   const LINE_COLOUR: string = '#0b008a';
   const LINE_WEIGHT: number = 4;
@@ -20,11 +16,13 @@
   export let startMarker: google.maps.Marker;
   export let endMarker: google.maps.Marker;
 
-  export let startLocation: string;
-  export let endLocation: string;
+  export let startLocation: string ;
+  export let endLocation: string ;
 
   export let startSet: boolean = false;
   export let endSet: boolean = false;
+
+  export let loader: Loader;
 
   type SettingState = 'start' | 'end' | 'nothing';
 
@@ -32,11 +30,23 @@
 
   let userPosition = { lat: 0, lng: 0 };
 
-  let map: google.maps.Map;
+  export let map: google.maps.Map;
 
   let geometry: google.maps.GeometryLibrary;
 
+  let places: google.maps.PlacesLibrary;
+
   onMount(async () => {
+    loader = new Loader({
+      apiKey: PUBLIC_MAPS_API_KEY,
+      version: 'weekly',
+      libraries: ['maps', 'geometry', 'places'],
+    });
+
+    await loader.importLibrary('places').then(() => {
+      dispatcher('loaded');
+    });
+
     geometry = await loader.importLibrary('geometry');
 
     if ('geolocation' in navigator) {
