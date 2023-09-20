@@ -3,7 +3,8 @@ import type { PageServerLoad } from './$types';
 import forceLogin from '$lib/forceLogin';
 
 export const load: PageServerLoad = async ({ locals, fetch }) => {
-    await forceLogin(locals);
+    const session = await forceLogin(locals);
+    const image = session.session.user?.image;
 
     const query = await fetch('/api/user');
     if (!query.ok) throw error(404, "We couldn't find you");
@@ -18,5 +19,5 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
         private: boolean;
     } = await query.json();
 
-    return data;
+    return { ...data, image };
 };

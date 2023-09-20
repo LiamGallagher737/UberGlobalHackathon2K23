@@ -4,16 +4,9 @@
   import { onMount } from 'svelte';
   import { expoIn } from 'svelte/easing';
   import { fade } from 'svelte/transition';
+  import type { PageData } from './$types';
 
-  export let data: {
-    id: number;
-    email: string;
-    name: string;
-    points: number;
-    code: string;
-    friends: number[] | null;
-    private: boolean;
-  };
+  export let data: PageData;
 
   let friendURIPromise: Promise<string> = new Promise<string>((resolve) => {
     onMount(() => {
@@ -34,7 +27,7 @@
 </script>
 
 <div class="bg-green-400 flex flex-col justify-center items-center p-12">
-  <Profile name={data.name} isPrivate={data.private} points={data.points} />
+  <Profile name={data.name} isPrivate={data.private} points={data.points} pfp={data.image ?? ''} />
 
   <div class="mb-60 flex flex-col justify-center items-center">
     {#await friendURIPromise}
