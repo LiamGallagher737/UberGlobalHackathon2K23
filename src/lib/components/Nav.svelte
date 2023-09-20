@@ -29,7 +29,7 @@
     <a href="/leaderboard">
       <img class="normal-link" width="45" height="45" src={leaderboard} alt="Leaderboard" />
     </a>
-    <a href="/profile">
+    <a href="/user">
       <img class="normal-link" width="45" height="45" src={person} alt="Profile" />
     </a>
   </div>
