@@ -9,7 +9,7 @@
 <div
   class="bg-green-500 flex flex-col items-center justify-start filter drop-shadow-md p-2 rounded-md max-h-50 m-10"
 >
-  <img src={pfp} class="w-20 h-20 object-cover rounded-full" alt="Profile Picture" />
+  <img src={pfp} class="w-20 h-20 object-cover rounded-full" alt="{name} looking their best." />
 
   <p
     class="text-green-500 font-bold text-md drop-shadow-xl {!isPrivate
